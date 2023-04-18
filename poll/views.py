@@ -108,7 +108,11 @@ def vote(request):
     if request.method == "POST":
         choice_pk = request.POST['option_pk']
         option = Choice.objects.get(pk=choice_pk)
-        option.votes = int(option.votes) + 1
+        
+        #Increment the vote count by one
+        option.votes += 1
+
+        #Get user and add to list of voters on this option
         user = UserProfile.objects.get(user = request.user)
         option.voters.add(user) 
 

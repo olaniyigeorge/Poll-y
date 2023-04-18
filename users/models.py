@@ -17,7 +17,7 @@ class UserProfile(models.Model):
     #asked_questions = models.ManyToManyField(Question, related_name="author")
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.user.username.capitalize()}"
 
 
 @receiver(post_save, sender=User)

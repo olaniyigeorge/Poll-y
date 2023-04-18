@@ -16,7 +16,7 @@
 
         <ul>
         {%  for option in options %}
-            <input type="radio" name='option_pk' value={{ option.pk }} /> {{option.choice_text}}
+            <input type="radio" name='option_pk' value= {{ option.pk }}  /> {{option.choice_text}}
         {%  endfor %}
         </ul>
 
