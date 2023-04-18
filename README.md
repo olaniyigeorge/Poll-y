@@ -4,6 +4,6 @@ This is a...
 >> ## A polls app with some of the functionalities of a social media app built with the Django web framework.
 
 
-This app will give authenticated users the ability to add and delete polls(questions and option). The options are limited to four for now but in the future that may change.
+This app will give authenticated users the ability to add, delete and vote on polls(questions and option). The options are limited to four for now but in the future that may change.
 
 -- Interested individuals are welcome to fork this repo 
