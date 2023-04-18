@@ -1,0 +1,41 @@
+{% extends 'users/base.html' %}
+
+{% block title %}
+    <title> Log In</title>
+{% endblock %}
+
+
+
+{% block message %}
+    
+{% endblock %}
+
+
+{% block body %}
+
+    {% if message %}
+        {{ message }}
+    {% endif %}
+
+
+    <form action="{% url 'users:signup' %}" method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <p>
+            {{ field.label_tag}} <br>
+            {{ field }}
+
+            {% if field.help_text %}
+                {{ field.help_text }}
+            {% endif %}
+            {% for error in field.errors %}
+                {{ error }}
+            {% endfor %}
+        </p>
+        {% endfor %}
+        <input type="submit" value="Sign Up">
+    </form>
+
+
+{% endblock %}

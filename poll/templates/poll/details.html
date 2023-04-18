@@ -1,0 +1,33 @@
+{% extends "poll/base.html" %}
+
+
+{% block title %}
+    <title> Poll </title>
+{% endblock %}
+
+
+
+{% block body %}
+
+    <h1> {{ question }} </h1>
+
+    <form action="{% url 'poll:vote' %}" method="post">
+        {% csrf_token %}
+
+        <ul>
+        {%  for option in options %}
+            <input type="radio" name='option_pk' value={{ option.pk }} /> {{option.choice_text}}
+        {%  endfor %}
+        </ul>
+
+        <input type="submit" name="answer" value="Vote">
+    </form>
+    
+    <p> {{ count }}</p>
+
+    <p>
+        Author: <strong> {{ question.author }} </strong>
+    </p>
+
+    <a href="{% url 'poll:index' %}"> View Polls</a>
+{% endblock %}

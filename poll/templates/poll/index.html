@@ -1,0 +1,25 @@
+{% extends "poll/base.html" %}
+
+
+{% block title %}
+    <title> Polls </title>
+{% endblock%}
+
+
+
+{% block body %}
+    <h1> Polls </h1>
+
+    <ol>
+        {% for question in questions %}
+            <li>{{ question }}</li> 
+            <a href="{% url 'poll:poll_details' question.id %}"> View Poll </a>
+        {% endfor %}
+    </ol>
+
+
+    <a href="{% url 'poll:add_question' %}"> Ask Question </a>     <br>
+    <a href="{% url 'users:index' %}"> Profile </a>     <br>
+    <a href="{% url 'users:signup' %}"> Sign Up</a>
+    
+{% endblock %}

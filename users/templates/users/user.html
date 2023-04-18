@@ -1,0 +1,31 @@
+{% extends 'users/base.html' %}
+
+{% block title %}
+    <title> Profile </title>
+{% endblock %}
+
+
+
+{% block body %}
+
+    <h2> Welcome, {{ user.username.capitalize }} </h2>
+    <p>---- {{ user.email }} </p>
+
+    <h3><i> My Polls... ({{ questions|length }})</i></h5>
+    
+    <ol>
+    {% for question in questions %}
+    
+        <li> {{ question.question_text }} </li>
+        <a href="{% url 'poll:poll_details' question.id %}"> View Poll </a>
+
+    {% empty %}
+        <i> You haven't created any polls </i>
+    {% endfor %}
+    </ol>
+        
+    <br>
+    <a href="{% url 'users:logout' %}"> Logout </a>
+    <a href="{% url 'poll:index' %}"> Go Home </a>
+    
+{% endblock %}

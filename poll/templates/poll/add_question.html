@@ -1,0 +1,40 @@
+{% extends "poll/add_poll.html" %}
+
+
+{% block title %}
+    <title> Add Question </title>
+{% endblock %}
+
+
+
+{% block body %}
+
+{% if message %}
+        {{ message }}
+    {% endif %}
+
+
+    <form action="{% url 'poll:add_question' %}" method="post">
+        {% csrf_token %}
+        
+        {% for field in question_form %}
+        <p>
+            {{ field.label_tag}} 
+            <br>
+            {{ field }}
+
+            {% if field.help_text %}
+                {{ field.help_text }}
+            {% endif %}
+
+            {% for error in field.errors %}
+                {{ error }}
+            {% endfor %}
+        </p>
+        {% endfor %}
+        <input type="submit" value="Ask">
+    </form>
+
+
+
+{% endblock %}
