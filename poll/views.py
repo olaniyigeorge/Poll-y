@@ -116,6 +116,8 @@ def vote(request):
         user = UserProfile.objects.get(user = request.user)
         option.voters.add(user) 
 
+        option.save()
+
         q= option.question
         return HttpResponseRedirect(reverse('poll:poll_details', args=(q.pk,)))
     
