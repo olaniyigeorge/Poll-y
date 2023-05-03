@@ -1,4 +1,4 @@
-{% extends 'users/base.html' %}
+{% extends 'poll/base.html' %}
 
 {% block title %}
     <title> Log In</title>
@@ -25,7 +25,7 @@
         <input type="submit" value="Login">
     </form>
 
-    
+    <a href="{% url 'users:signup' %}"> Register </a>
 
 
 {% endblock %}

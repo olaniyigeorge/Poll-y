@@ -1,4 +1,4 @@
-{% extends 'users/base.html' %}
+{% extends 'poll/base.html' %}
 
 {% block title %}
     <title> Profile </title>
@@ -26,6 +26,5 @@
         
     <br>
     <a href="{% url 'users:logout' %}"> Logout </a>
-    <a href="{% url 'poll:index' %}"> Go Home </a>
     
 {% endblock %}
