@@ -2,8 +2,8 @@ from django.http import HttpResponseRedirect
 from .models import Question, Choice
 from django import forms
 from .forms import QuestionForm, ChoiceForm
-
-
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 from users.models import UserProfile
 
 
@@ -17,7 +17,7 @@ def index(request):
 
 # Route to the polls details page
 def poll_details(request, question_id):
-    q = Question.objects.get(pk=question_id)
+    q = get_object_or_404(Question, pk=question_id)
     #options = Choice.objects.filter(question=q)
     options = q.options.all()
     count= 0
@@ -30,13 +30,13 @@ def poll_details(request, question_id):
         'count': count
     })
 
-
+@login_required(login_url='users/login')
 def add_choices(request):
     question_pk = request.session["question_pk"]
     if request.method == "POST":
         form = ChoiceForm(request.POST)
         if form.is_valid():
-            question = Question.objects.get(pk=question_pk)
+            question = get_object_or_404(Question, pk=question_pk)
             choice_text1 = form.cleaned_data.get("choice_text1")
             choice_text2 = form.cleaned_data.get("choice_text2")
             choice_text3 = form.cleaned_data.get("choice_text3")
@@ -67,7 +67,7 @@ def add_choices(request):
             {"choices_form": choice_form, "question": question},
         )
 
-
+@login_required(login_url='users/login')
 def add_question(request):
     if request.method == "POST":
         form = QuestionForm(request.POST)
@@ -106,18 +106,24 @@ def add_question(request):
 
 def vote(request):
     if request.method == "POST":
-        choice_pk = request.POST['option_pk']
-        option = Choice.objects.get(pk=choice_pk)
-        
-        #Increment the vote count by one
-        option.votes += 1
-
-        #Get user and add to list of voters on this option
+        selected_choice_pk = request.POST['option_pk']
+        option = get_object_or_404(Choice, pk=selected_choice_pk)
+        q= option.question
         user = UserProfile.objects.get(user = request.user)
-        option.voters.add(user) 
-
+        
+        #Check if user exist amongst voters of of ALL the choices in this question
+        for question_choice in q.options.all():
+            if question_choice.voters.filter(user= request.user).exists():
+                return HttpResponseRedirect(reverse('poll:poll_details', args=(q.pk,)))
+        
+        #Increment the votes and add voters if not
+        option.votes += 1
+        option.voters.add(user)
         option.save()
 
-        q= option.question
         return HttpResponseRedirect(reverse('poll:poll_details', args=(q.pk,)))
     
+
+
+
+
