@@ -35,8 +35,39 @@ def index(request):
     })
 
 
+#Login user
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username= username, password= password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("poll:index"))
+        else:
+            return render(request, "users/login.html", {
+                'message': "Invalid credientials"
+            })
+        
+    return render(request, "users/login.html")
+
+#Logout view
+def logout_view(request):
+    logout(request)
+    return render(request, "users/login.html", {
+        'message': 'Logged Out' 
+        })
+
+
 #User profile
 def profile(request, username):
+
+    if username  == 'AnonymousUser':
+        return HttpResponseRedirect(reverse(f"users:login"))
+    
+    if username in ['logout', 'login', 'signup']:
+        return HttpResponseRedirect(reverse(f"users:{username}"))
+    
     user = get_object_or_404(User, username=username)
     user_profile = get_object_or_404(UserProfile, user= user)
 
@@ -55,21 +86,6 @@ def profile(request, username):
 
 
 
-#Login user
-def login_view(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username= username, password= password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse("poll:index"))
-        else:
-            return render(request, "users/login.html", {
-                'message': "Invalid credientials"
-            })
-        
-    return render(request, "users/login.html")
 
 #Register new user
 def signup(request):
@@ -95,12 +111,6 @@ def signup(request):
         'form': form
     })
 
-#Logout view
-def logout_view(request):
-    logout(request)
-    return render(request, "users/login.html", {
-        'message': 'Logged Out' 
-        })
 
 
 

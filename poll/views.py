@@ -103,10 +103,11 @@ def add_question(request):
             request, "poll/add_question.html", {"question_form": question_form}
         )
 
-
+@login_required(login_url='users/login')
 def vote(request):
     if request.method == "POST":
         selected_choice_pk = request.POST['option_pk']
+        
         option = get_object_or_404(Choice, pk=selected_choice_pk)
         q= option.question
         user = UserProfile.objects.get(user = request.user)
