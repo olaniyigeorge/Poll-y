@@ -26,7 +26,10 @@
     
 
     <p>
-        Author: <strong> {{ question.author }} </strong>
+        Author:
+        <strong> 
+            <a href="{% url 'users:profile' question.author.user.username %}"> {{ question.author }} </a>  
+        </strong>
     </p>
 
 {% endblock %}

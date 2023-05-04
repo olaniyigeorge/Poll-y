@@ -5,23 +5,56 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from users.forms import SignUpForm
 from poll.models import Question, Choice
-from .models import UserProfile
+from .models import UserProfile, User
+from django.shortcuts import get_object_or_404
 
-# Create your views here.
+
+""" # Create your views here.
+def index(request):
+ """    
+
+
+# Profile page views
 def index(request):
     if not request.user.is_authenticated:
         return render(request, "users/login.html")
 
     user = request.user
     user_profile = UserProfile.objects.get(user=user)
+
+    #Get user's followers
+    user_followers = user_profile.followers.all()
+
+    #Get user's questions
     user_questions = Question.objects.filter(author = user_profile)
     return render(request, 'users/user.html', {
         'user': user,
-        'questions': user_questions
+        'questions': user_questions,
+        "followers": user_followers
 
     })
 
-    
+
+#User profile
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    user_profile = get_object_or_404(UserProfile, user= user)
+
+    #Get user's followers
+    user_followers = user_profile.followers.all()
+
+    #Get user's questions
+    user_questions = Question.objects.filter(author = user_profile)
+    return render(request, 'users/user.html', {
+        'user': user,
+        'questions': user_questions,
+        "followers": user_followers
+
+    })
+
+
+
+
 #Login user
 def login_view(request):
     if request.method == "POST":
@@ -30,7 +63,7 @@ def login_view(request):
         user = authenticate(request, username= username, password= password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("users:index"))
+            return HttpResponseRedirect(reverse("poll:index"))
         else:
             return render(request, "users/login.html", {
                 'message': "Invalid credientials"
@@ -68,3 +101,9 @@ def logout_view(request):
     return render(request, "users/login.html", {
         'message': 'Logged Out' 
         })
+
+
+
+#Follow view
+def follow(request):
+    pass

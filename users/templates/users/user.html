@@ -11,6 +11,22 @@
     <h2> Welcome, {{ user.username.capitalize }} </h2>
     <p>---- {{ user.email }} </p>
 
+    <hr>
+
+    <p> Followers </p>
+    <ol>
+        {% for follower in followers %}
+            
+            <li> {{follower}} </li>
+
+            {% empty %}
+                <i> You don't have any followers</i>
+
+        {% endfor %}
+    </ol>
+    
+    <hr>
+    
     <h3><i> My Polls... ({{ questions|length }})</i></h5>
     
     <ol>
@@ -23,6 +39,8 @@
         <i> You haven't created any polls </i>
     {% endfor %}
     </ol>
+
+
         
     <br>
     <a href="{% url 'users:logout' %}"> Logout </a>

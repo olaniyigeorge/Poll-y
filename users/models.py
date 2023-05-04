@@ -11,6 +11,7 @@ from django.dispatch import receiver
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    followers = models.ManyToManyField('self', symmetrical=False, related_name='following')
 
 
     #voted_choices = models.ManyToManyField(Choice, related_name="voters")
