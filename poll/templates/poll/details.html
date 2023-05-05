@@ -9,7 +9,10 @@
 
 {% block body %}
 
+
+
     <h1> {{ question }} </h1>
+
 
     <form action="{% url 'poll:vote' %}" method="post">
         {% csrf_token %}
@@ -21,6 +24,16 @@
         </ul>
         <p> {{ count }} Votes </p>
         <input type="submit" name="answer" value="Vote">
+    </form>
+
+
+
+    {{ message }}
+
+
+    <form action="{% url 'poll:delete' question.id  %}" method="post">
+        {% csrf_token %}
+        <input type="submit" name="delete" value="Delete Poll">
     </form>
     
     

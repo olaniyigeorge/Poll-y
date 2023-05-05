@@ -124,7 +124,15 @@ def vote(request):
 
         return HttpResponseRedirect(reverse('poll:poll_details', args=(q.pk,)))
     
-
-
+def delete(request, question_id):
+    #get question
+    question = get_object_or_404(Question, pk=question_id)
+    #if request.method == "POST":
+    #Check if request.user is author
+    if request.user == question.author.user:
+        question.delete()
+        return HttpResponseRedirect(reverse('poll:index'))
+    else:
+        return HttpResponseRedirect(reverse("poll:poll_details", args=(question_id,)))
 
 

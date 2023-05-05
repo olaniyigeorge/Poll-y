@@ -9,3 +9,10 @@
 - 5. Add author attribute to Question class
 - 6. Add voters attribute to Choice class
 
+
+
+
+ISSUES
+1. Redirect users back to the last page(profile page or homepage) after deleting a poll
+2. Show a message reads "Only poll authors can delete polls" when users try to delete a poll they didn't create
+
