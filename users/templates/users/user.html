@@ -17,7 +17,7 @@
     <ol>
         {% for follower in followers %}
             
-            <li> {{follower}} </li>
+            <li> <a href="{% url 'users:profile' follower %}"> {{follower}} </a> </li>
 
             {% empty %}
                 <i> You don't have any followers</i>
@@ -40,7 +40,12 @@
     {% endfor %}
     </ol>
 
-
+    {% if request.user != user %}
+        <form action="{% url 'users:connect' user.id  %}" method="post">
+            {% csrf_token %}
+            <input type="submit" name="connect" value="Connect">
+        </form>
+    {% endif %}
         
     <br>
     <a href="{% url 'users:logout' %}"> Logout </a>
