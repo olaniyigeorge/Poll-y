@@ -115,5 +115,22 @@ def signup(request):
 
 
 #Follow view
-def follow(request):
-    pass
+def connect(request, user_id):
+    '''
+    This function gets the signed in user, gets the user to be followed using the 
+    user_id provided and adds the user to the followers or removes the user from 
+    the list of folowers '''
+    auth_user = get_object_or_404(UserProfile, user=request.user)
+    followee = get_object_or_404(UserProfile, pk=user_id)
+
+
+    if followee.followers.filter(user=request.user).exists():
+        #Unfollow
+        followee.followers.remove(auth_user)
+    else:
+        #follow
+        followee.followers.add(auth_user)
+    
+    
+    followee.save()
+    return HttpResponseRedirect(reverse("poll:index"))
