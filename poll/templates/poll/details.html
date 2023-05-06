@@ -31,10 +31,12 @@
     {{ message }}
 
 
-    <form action="{% url 'poll:delete' question.id  %}" method="post">
-        {% csrf_token %}
-        <input type="submit" name="delete" value="Delete Poll">
-    </form>
+    {% if request.user == question.author.user %}
+        <form action="{% url 'poll:delete' question.id  %}" method="post">
+            {% csrf_token %}
+            <input type="submit" name="delete" value="Delete Poll">
+        </form>
+    {% endif %}
     
     
 
