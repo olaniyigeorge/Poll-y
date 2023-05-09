@@ -22,10 +22,13 @@
             <input type="radio" name='option_pk' value= {{ option.pk }}  /> {{option.choice_text}} <strong>{{ option.votes }}</strong> <br> <br>
         {%  endfor %}
         </ul>
-        <p> {{ count }} Votes </p>
+        
         <input type="submit" name="answer" value="Vote">
     </form>
 
+    <p> {{ count }} Votes </p>
+    <p> {{ question.likers|length }} Likes </p>
+    
 
 
     {{ message }}
@@ -37,6 +40,14 @@
             <input type="submit" name="delete" value="Delete Poll">
         </form>
     {% endif %}
+
+
+    <form action="{% url 'poll:like' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="question" value={{ question.id }}>
+        <input type="submit" name="like" value="Like">
+    </form>
+
     
     
 
@@ -46,5 +57,34 @@
             <a href="{% url 'users:profile' question.author.user.username %}"> {{ question.author }} </a>  
         </strong>
     </p>
+
+
+    <hr>
+
+    <h3> Comments </h3>
+
+    <form action="{% url 'poll:comment' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="question" value={{ question.id }}>
+        <input type="text" name="comment_text" placeholder="Coment on this poll">
+        <input type="submit" name="comment" value="Post comment">
+    </form>
+
+
+    {% for comment in comments %}
+
+        <ul> 
+            <li> {{ comment.comment_text }} </li> 
+            <em> By: <a href="{% url 'users:profile' comment.author %}"> {{ comment.author }} </a>  </em>
+        </ul>
+        
+
+    {% endfor %}
+
+
+
+
+
+
 
 {% endblock %}
