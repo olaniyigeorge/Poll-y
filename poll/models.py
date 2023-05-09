@@ -15,6 +15,8 @@ class Question(models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="questions_asked")
     is_active = models.BooleanField(default=True)
 
+    likers = models.ManyToManyField(UserProfile, blank=True, related_name="liked_polls")
+
     def toggle_status(self):
             if self.is_active:
                 self.is_active = False
@@ -25,7 +27,15 @@ class Question(models.Model):
         return f"{self.question_text}"
 
     
+class Comment(models.Model):
+    comment_text = models.CharField(max_length=500)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="poll_comment")
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, default=None, related_name="comments_i_wrote")
 
+    def __str__(self) -> str:
+        return f"{self.comment_text}"
+
+     
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, default=None, related_name="options")

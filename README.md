@@ -1,8 +1,8 @@
 # Poll-y
 On my journey of learning Django web framework, I'm bulding the Poll app describe and explained in the Django documentation and adding some little functionalities to it.
-This is a...
-> # A poll app with some of the functionalities of a social media app built with the Django web framework.
 
+This is...
+> # A poll app with some of the functionalities of a social media app built with the Django web framework.
 
 My goal is to build a poll app that allows users to create and participate in polls on a variety of topics. The app should also include some social media features, such as the ability to follow other users, like and comment on polls, and receive notifications about new polls or activity from followed users.
 

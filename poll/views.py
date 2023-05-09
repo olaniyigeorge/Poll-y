@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from .models import Question, Choice
+from .models import Question, Choice, Comment
 from django import forms
 from .forms import QuestionForm, ChoiceForm
 from django.contrib.auth.decorators import login_required
@@ -17,17 +17,20 @@ def index(request):
 
 # Route to the polls details page
 def poll_details(request, question_id):
-    q = get_object_or_404(Question, pk=question_id)
-    #options = Choice.objects.filter(question=q)
-    options = q.options.all()
-    count= 0
-    for _ in options:
-        count += _.votes
+    question = get_object_or_404(Question, pk=question_id)
+    choices = question.options.all()
+    poll_comments = Comment.objects.filter(question=question)
+
+    
+    total_vote_count= 0
+    for _ in choices:
+        total_vote_count += _.votes
 
     return render(request, "poll/details.html", {
-        "question": q, 
-        "options": options,
-        'count': count
+        "question": question, 
+        "options": choices,
+        'count': total_vote_count,
+        'comments': poll_comments
     })
 
 @login_required(login_url='users/login')
@@ -112,7 +115,7 @@ def vote(request):
         q= option.question
         user = UserProfile.objects.get(user = request.user)
         
-        #Check if user exist amongst voters of of ALL the choices in this question
+        #Check if user exists amongst voters of of ALL the choices in this question
         for question_choice in q.options.all():
             if question_choice.voters.filter(user= request.user).exists():
                 return HttpResponseRedirect(reverse('poll:poll_details', args=(q.pk,)))
@@ -134,5 +137,26 @@ def delete(request, question_id):
         return HttpResponseRedirect(reverse('poll:index'))
     else:
         return HttpResponseRedirect(reverse("poll:poll_details", args=(question_id,)))
+
+
+def comment(request):
+    if request.method == 'POST':
+        author = UserProfile.objects.get(user =request.user)
+        question = Question.objects.get(pk=request.POST["question"])
+        comment = Comment(comment_text=request.POST["comment_text"],  question=question, author=author)
+        comment.save()
+
+    return HttpResponseRedirect(reverse("poll:poll_details", args=(question.id,)))
+
+
+def like(request):
+    if request.method == 'POST':
+        author = UserProfile.objects.get(user =request.user)
+        question = Question.objects.get(pk=request.POST["question"])
+
+        question.likers.add(author)
+        #question.save()
+
+    return HttpResponseRedirect(reverse("poll:poll_details", args=(question.id,)))
 
 
