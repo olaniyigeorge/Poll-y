@@ -16,3 +16,9 @@ My goal is to build a poll app that allows users to create and participate in po
 
 
 -- Interested individuals are welcome to contribute to this project
+
+
+### Some Intented UIs
+![Poll-y  auth page](https://github.com/olaniyigeorge/Poll-y/assets/27226623/261e0cb5-2b16-4110-be67-b943fbf1348d)
+![Poll-y auth'd feed](https://github.com/olaniyigeorge/Poll-y/assets/27226623/2e264b49-af6d-4e45-bcd1-46027489979a)
+![Poll-y poll page](https://github.com/olaniyigeorge/Poll-y/assets/27226623/5b570256-4e6a-4922-ab15-c8d10c36782e)
