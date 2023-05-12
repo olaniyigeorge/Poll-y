@@ -45,3 +45,21 @@ class Choice(models.Model):
 
     def __str__(self) -> str:
         return f"{self.choice_text.capitalize()}"
+
+
+
+class Notification(models.Model):
+    ACTION_CHOICES = [
+        ('commented on', 'Comment'),
+        ('liked', 'Like'),
+        ('voted on', 'Vote'),
+        ('toggled connect', 'Follow')
+    ]
+
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='notifications')
+    action = models.CharField(max_length=15, choices=ACTION_CHOICES)
+    action_receiver = models.ForeignKey(Question, on_delete=models.CASCADE, null=True, blank=True, related_name='generated_impressions')
+    from_who = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='activity')
+
+    def __str__(self):
+            return f'{self.from_who} {self.action}  {self.action_receiver} {self.owner}'
