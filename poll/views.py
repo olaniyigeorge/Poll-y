@@ -11,8 +11,12 @@ from django.shortcuts import render, reverse
 
 # Create your views here.
 def index(request):
-    latest_questions = Question.objects.order_by("-pub_date")[:10]
+    user = request.user
 
+    if user.is_authenticated:
+        return HttpResponseRedirect(reverse("poll:home"))
+    
+    latest_questions = Question.objects.order_by("-pub_date")[:10]  
     return render(request, "poll/index.html", {"questions": latest_questions})
 
 @login_required(login_url="users/login")
@@ -193,7 +197,10 @@ def delete(request, question_id):
     #Check if request.user is author
     if request.user == question.author.user:
         question.delete()
-        return HttpResponseRedirect(reverse('poll:index'))
+        return HttpResponseRedirect(reverse('poll:home'))
+        # redirect back to the previous page
+        #return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('poll:home')))
+        
     else:
         return HttpResponseRedirect(reverse("poll:poll_details", args=(question_id,)))
 
