@@ -13,5 +13,6 @@ urlpatterns = [
     path('vote/', views.vote, name="vote"),
     path("delete/<int:question_id>", views.delete, name="delete"),
     path("comment", views.comment, name="comment"),
-    path("like", views.like, name="like")
+    path("like", views.like, name="like"),
+    path('notifications', views.notifications, name='notifications')
 ]

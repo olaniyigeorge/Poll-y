@@ -13,8 +13,8 @@
 
     <hr>
 
-    <p> Followers </p>
-    <ol>
+    <p>  {{ followers|length }}  Follower(s)</p>
+    <ul>
         {% for follower in followers %}
             
             <li> <a href="{% url 'users:profile' follower %}"> {{follower}} </a> </li>
@@ -23,12 +23,20 @@
                 <i> You don't have any followers</i>
 
         {% endfor %}
-    </ol>
+    </ul>
     
     <hr>
     
-    <h3><i> My Polls... ({{ questions|length }})</i></h5>
+    <h3>
+        <i> My Polls... ({{ questions|length }})</i>
+    </h3>
     
+    <h3>
+        <a href="{% url 'poll:notifications' %}"> Notifications </a>
+    </h3>
+
+    
+    <hr>
     <ol>
     {% for question in questions %}
     

@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from .models import Question, Choice, Comment
+from .models import Question, Choice, Comment, Notification
 from django import forms
 from .forms import QuestionForm, ChoiceForm
 from django.contrib.auth.decorators import login_required
@@ -17,10 +17,14 @@ def index(request):
 
 # Route to the polls details page
 def poll_details(request, question_id):
+    
+
     question = get_object_or_404(Question, pk=question_id)
     choices = question.options.all()
     poll_comments = Comment.objects.filter(question=question)
 
+    #Increment views upon poll details page request
+    #  poll.views += 1
     
     total_vote_count= 0
     for _ in choices:
@@ -32,6 +36,11 @@ def poll_details(request, question_id):
         'count': total_vote_count,
         'comments': poll_comments
     })
+
+def send_notifcation(sender, object, action):
+    #TODO Add message to object author specifying the action
+    pass
+
 
 @login_required(login_url='users/login')
 def add_choices(request):
@@ -112,20 +121,25 @@ def vote(request):
         selected_choice_pk = request.POST['option_pk']
         
         option = get_object_or_404(Choice, pk=selected_choice_pk)
-        q= option.question
+        question = option.question
         user = UserProfile.objects.get(user = request.user)
         
-        #Check if user exists amongst voters of of ALL the choices in this question
-        for question_choice in q.options.all():
+        #Check if user exists amongst voters of ALL the choices in this question
+        for question_choice in question.options.all():
             if question_choice.voters.filter(user= request.user).exists():
-                return HttpResponseRedirect(reverse('poll:poll_details', args=(q.pk,)))
+                return HttpResponseRedirect(reverse('poll:poll_details', args=(question.pk,)))
         
         #Increment the votes and add voters if not
         option.votes += 1
         option.voters.add(user)
         option.save()
 
-        return HttpResponseRedirect(reverse('poll:poll_details', args=(q.pk,)))
+        #Add notification to poll author's notifications
+        new_notification = Notification(owner=question.author, action='vote', action_receiver=question, from_who=user)
+        new_notification.save()
+        
+
+        return HttpResponseRedirect(reverse('poll:poll_details', args=(question.pk,)))
     
 def delete(request, question_id):
     #get question
@@ -141,22 +155,45 @@ def delete(request, question_id):
 
 def comment(request):
     if request.method == 'POST':
-        author = UserProfile.objects.get(user =request.user)
+        comment_author = UserProfile.objects.get(user =request.user)
         question = Question.objects.get(pk=request.POST["question"])
-        comment = Comment(comment_text=request.POST["comment_text"],  question=question, author=author)
+        comment = Comment(comment_text=request.POST["comment_text"],  question=question, author=comment_author)
         comment.save()
+
+        #Add notification to poll author's notifications
+        new_notification = Notification(owner=question.author, action='comment', action_receiver=question, from_who=comment_author)
+        new_notification.save()
 
     return HttpResponseRedirect(reverse("poll:poll_details", args=(question.id,)))
 
 
 def like(request):
     if request.method == 'POST':
-        author = UserProfile.objects.get(user =request.user)
+        liker = UserProfile.objects.get(user =request.user)
         question = Question.objects.get(pk=request.POST["question"])
 
-        question.likers.add(author)
-        #question.save()
+        question.likers.add(liker)
+        
+
+        #Add notification to poll author's notifications
+        new_notification = Notification(owner=question.author, action='like', action_receiver=question, from_who=liker)
+        new_notification.save()
 
     return HttpResponseRedirect(reverse("poll:poll_details", args=(question.id,)))
 
+
+
+@login_required(login_url='users:login')
+def notifications(request):
+    #get the auth'd user
+    user = request.user
+    user_profile = get_object_or_404(UserProfile, user=user)
+
+    notifications = Notification.objects.filter(owner=user_profile)
+
+    return render(
+        request, 
+        "poll/notifications.html", 
+        {"notifications": notifications}
+        )
 

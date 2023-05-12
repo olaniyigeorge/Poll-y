@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from users.forms import SignUpForm
-from poll.models import Question, Choice
+from poll.models import Question, Notification
 from .models import UserProfile, User
 from django.shortcuts import get_object_or_404
 
@@ -101,7 +101,7 @@ def signup(request):
             #email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
 
-            user = authenticate(username=username, password=raw_password)
+            user = authenticate(username=username.lower(), password=raw_password)
             login(request, user)
 
             return HttpResponseRedirect(reverse("users:index"))      
@@ -133,4 +133,13 @@ def connect(request, user_id):
     
     
     followee.save()
-    return HttpResponseRedirect(reverse("poll:index"))
+
+
+    #Add notification to poll author's notifications
+    new_notification = Notification(owner=followee, action='follow', from_who=auth_user)
+    new_notification.save()
+
+
+
+
+    return HttpResponseRedirect(reverse("users:profile", args=(followee.user.username,)))
