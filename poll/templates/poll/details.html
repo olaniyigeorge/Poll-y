@@ -16,14 +16,18 @@
 
     <form action="{% url 'poll:vote' %}" method="post">
         {% csrf_token %}
-
         <ul>
         {%  for option in options %}
             <input type="radio" name='option_pk' value= {{ option.pk }}  /> {{option.choice_text}} <strong>{{ option.votes }}</strong> <br> <br>
         {%  endfor %}
         </ul>
-        
-        <input type="submit" name="answer" value="Vote">
+        <input type="submit" name="answer"  {% if not user.is_authenticated %} disabled {% endif %} value="Vote">
+    </form>
+
+    <form action="{% url 'poll:like' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="question" value={{ question.id }}>
+            <input type="submit" name="like"  {% if not user.is_authenticated %} disabled {% endif %} value="Like">
     </form>
 
     <p> {{ count }} Votes </p>
@@ -42,12 +46,7 @@
     {% endif %}
 
 
-    <form action="{% url 'poll:like' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="question" value={{ question.id }}>
-        <input type="submit" name="like" value="Like">
-    </form>
-
+    
     
     
 

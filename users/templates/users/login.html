@@ -1,31 +1,36 @@
-{% extends 'poll/base.html' %}
-
-{% block title %}
-    <title> Log In</title>
-{% endblock %}
-
-
-
-{% block message %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> 
+            Log In
+        </title>
+    </head>
     
-{% endblock %}
 
 
-{% block body %}
-
-    {% if message %}
-        {{ message }}
-    {% endif %}
-
-
-    <form action="{% url 'users:login' %}" method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password">
-        <input type="submit" value="Login">
-    </form>
-
-    <a href="{% url 'users:signup' %}"> Register </a>
+    <body>
+        <a href="{% url 'poll:index' %}"> Go home</a>
+        {% block message %}
+            {% if message %}
+                {{ message }}
+            {% endif %}
+        {% endblock %}
 
 
-{% endblock %}
+        <form action="{% url 'users:login' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password">
+            <br>
+            <input type="submit" value="Login">
+        </form>
+
+        <p> Don't have an account? <a href="{% url 'users:signup' %}"> Register </a> </p> 
+
+    </body>
+
+
+
+    
+
+</html>

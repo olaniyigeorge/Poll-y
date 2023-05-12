@@ -1,0 +1,22 @@
+{% extends "poll/base.html" %}
+
+
+{% block title %}
+    <title> Following Feed </title>
+{% endblock%}
+
+
+
+{% block body %}
+
+    <h1> Polls from following </h1>
+
+    <ol>
+        {% for poll in latest_following_polls %}
+            <li>{{ poll }}</li> 
+            <a href="{% url 'poll:poll_details' poll.id %}"> View Poll </a>
+        {% endfor %}
+    </ol>
+
+
+{% endblock %}

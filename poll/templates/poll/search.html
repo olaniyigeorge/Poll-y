@@ -1,0 +1,39 @@
+{% extends "poll/layout.html" %}
+
+
+{% block title %}
+    <title> Search </title>
+{% endblock%}
+
+
+
+{% block body %}
+    <h1> Search Results </h1>
+
+    <h3> Questions ({{ question_results|length }})</h3>
+    <ol>
+        {% for poll in question_results %}
+            <li>{{ poll }}</li> 
+            <a href="{% url 'poll:poll_details' poll.id %}"> View Poll </a>
+        {% endfor %}
+    </ol>
+
+    <h3> People ({{ people_results|length }})</h3>
+    <ol>
+        {% for person in people_results %}
+            <li>{{ person.user.username }}</li> 
+            <a href="{% url 'users:profile' person.user.username %}"> View Person </a>
+        {% endfor %}
+    </ol>
+
+    <h3> Choices ({{ choice_results|length }})</h3>
+    <ol>
+        {% for choice in choice_results %}
+            <li>{{ choice.choice_text }}</li> 
+            <a href="{% url 'poll:poll_details' choice.question.id %}"> View Poll </a>
+        {% endfor %}
+    </ol>
+
+
+
+{% endblock %}

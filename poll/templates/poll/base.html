@@ -9,11 +9,34 @@
     <body>
         <div id="top_nav">
             <a href="{% url 'poll:index' %}"> Home </a> 
-            <a href="{% url 'users:profile' user %}"> Profile </a>
-            <a href="{% url 'poll:add_question' %}"> Ask Question </a>    
-            <a href="{% url 'users:signup' %}"> Sign Up</a>
+            <div id="search_group">
+                <form action="{% url 'poll:search' %}" method="get">
+                    <input type="text" name="query" placeholder="Search Polly">
+                    <input type="submit" value="Search">
+                </form>
+            </div>
         </div>
+
+        <hr>
+
+        {% if user.is_authenticated %}
+            <div id="side_nav">
+                <a href="{% url 'poll:home' %}"> Home </a> 
+                <a href="{% url 'users:profile' user %}"> Profile </a>
+                <a href="{% url 'poll:notifications' %}"> Notifications </a>
+                <a href="{% url 'poll:add_question' %}"> Ask Question </a>    
+                <a href="{% url 'users:logout' %}"> Log Out </a>
+            </div>
+        {% endif %}
+        
         {% block body %}
         {% endblock%}
+
+        {% if not user.is_authenticated %}
+            <div id="bottom_auth_nav">
+                <a href="{% url 'users:login' %}"> Log in </a>    
+                <a href="{% url 'users:signup' %}"> Sign Up</a>
+            </div>
+        {% endif%}
     </body>
 </html>

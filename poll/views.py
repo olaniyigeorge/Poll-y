@@ -3,7 +3,7 @@ from .models import Question, Choice, Comment, Notification
 from django import forms
 from .forms import QuestionForm, ChoiceForm
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from users.models import UserProfile
 
 
@@ -14,6 +14,20 @@ def index(request):
     latest_questions = Question.objects.order_by("-pub_date")[:10]
 
     return render(request, "poll/index.html", {"questions": latest_questions})
+
+@login_required(login_url="users/login")
+def home(request):
+    this_user = get_object_or_404(UserProfile, user=request.user)
+    
+    following = this_user.following.all()
+    feed = []
+    for person in following:
+        latest_polls = Question.objects.filter(author=person).order_by("-pub_date")[:5]
+        for poll in latest_polls:
+            feed.append(poll)
+
+    return render(request, "poll/home.html", {'latest_following_polls': feed})
+
 
 # Route to the polls details page
 def poll_details(request, question_id):
@@ -36,6 +50,37 @@ def poll_details(request, question_id):
         'count': total_vote_count,
         'comments': poll_comments
     })
+
+
+def search(request):
+    query = request.GET['query'].capitalize()
+
+    question_results = []
+    questions = Question.objects.all()
+    for question in questions:
+        if query.lower() in question.question_text.lower():
+            question_results.append(question)
+
+    people_results = []
+    people = UserProfile.objects.all()
+    for person in people:
+        if query.lower() in person.user.username.lower():
+            people_results.append(person)
+
+    choice_results = []
+    choices = Choice.objects.all()
+    for choice in choices:
+        if query.lower() in choice.choice_text.lower():
+            choice_results.append(choice)
+
+    return render(request, "poll/search.html", {
+        "question_results": question_results,
+        "people_results": people_results,
+        "choice_results": choice_results
+
+        })
+
+
 
 def send_notifcation(sender, object, action):
     #TODO Add message to object author specifying the action
@@ -195,5 +240,19 @@ def notifications(request):
         request, 
         "poll/notifications.html", 
         {"notifications": notifications}
+        )
+
+@login_required(login_url='users:login')
+def activities(request):
+    #get the auth'd user
+    user = request.user
+    user_profile = get_object_or_404(UserProfile, user=user)
+
+    activities = Notification.objects.filter(from_who=user_profile)
+
+    return render(
+        request, 
+        "poll/notifications.html", 
+        {"notifications": activities}
         )
 

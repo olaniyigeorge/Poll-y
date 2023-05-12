@@ -13,17 +13,36 @@
 
     <hr>
 
-    <p>  {{ followers|length }}  Follower(s)</p>
-    <ul>
-        {% for follower in followers %}
-            
-            <li> <a href="{% url 'users:profile' follower %}"> {{follower}} </a> </li>
+    <div id="connect">
+        <p>  {{ followers|length }}  Follower(s)</p>
+        <ul>
+            {% for follower in followers %}
+                
+                {% empty %}
+                    <i> You don't have any followers</i>
 
-            {% empty %}
-                <i> You don't have any followers</i>
+                <li> <a href="{% url 'users:profile' follower %}"> {{follower}} </a> </li>
 
-        {% endfor %}
-    </ul>
+                
+
+            {% endfor %}
+        </ul>
+
+        <p>  {{ followings|length }}  Following(s) </p>
+        <ul>
+            {% for following in followings %}
+                
+                {% empty %}
+                    <i> You don't have any followers</i>
+
+                <li> <a href="{% url 'users:profile' following %}"> {{follower}} </a> </li>
+
+                
+
+            {% endfor %}
+        </ul>
+        
+    </div>
     
     <hr>
     
@@ -32,7 +51,7 @@
     </h3>
     
     <h3>
-        <a href="{% url 'poll:notifications' %}"> Notifications </a>
+        <a href="{% url 'poll:activities' %}"> Activities </a>
     </h3>
 
     
@@ -56,6 +75,11 @@
     {% endif %}
         
     <br>
-    <a href="{% url 'users:logout' %}"> Logout </a>
+
+    {% if request.user == user %}
+
+        <a href="{% url 'users:logout' %}"> Logout </a>
+
+    {% endif %}
     
 {% endblock %}

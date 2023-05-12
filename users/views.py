@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpRequest
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from users.forms import SignUpForm
@@ -8,6 +8,7 @@ from poll.models import Question, Notification
 from .models import UserProfile, User
 from django.shortcuts import get_object_or_404
 
+from poll.views import index
 
 """ # Create your views here.
 def index(request):
@@ -43,7 +44,7 @@ def login_view(request):
         user = authenticate(request, username= username, password= password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("poll:index"))
+            return HttpResponseRedirect(reverse("poll:home"))
         else:
             return render(request, "users/login.html", {
                 'message': "Invalid credientials"
@@ -54,9 +55,8 @@ def login_view(request):
 #Logout view
 def logout_view(request):
     logout(request)
-    return render(request, "users/login.html", {
-        'message': 'Logged Out' 
-        })
+
+    return HttpResponseRedirect(reverse("poll:index"))
 
 
 #User profile
@@ -74,12 +74,16 @@ def profile(request, username):
     #Get user's followers
     user_followers = user_profile.followers.all()
 
+    #Get user's following
+    user_following = user_profile.following.all()
+
     #Get user's questions
     user_questions = Question.objects.filter(author = user_profile)
     return render(request, 'users/user.html', {
         'user': user,
         'questions': user_questions,
-        "followers": user_followers
+        "followers": user_followers,
+        'followings': user_following
 
     })
 
