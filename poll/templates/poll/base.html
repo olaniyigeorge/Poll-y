@@ -22,9 +22,9 @@
         {% if user.is_authenticated %}
             <div id="side_nav">
                 <a href="{% url 'poll:home' %}"> Home </a> 
-                <a href="{% url 'users:profile' user %}"> Profile </a>
+                <a href="{% url 'users:profile' request.user %}"> Profile </a>
                 <a href="{% url 'poll:notifications' %}"> Notifications </a>
-                <a href="{% url 'poll:add_question' %}"> Ask Question </a>    
+                <a href="{% url 'poll:add_question' %}"> Create Poll </a>    
                 <a href="{% url 'users:logout' %}"> Log Out </a>
             </div>
         {% endif %}
