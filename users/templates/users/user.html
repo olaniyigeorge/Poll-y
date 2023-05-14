@@ -8,8 +8,10 @@
 
 {% block body %}
 
-    <h2> Welcome, {{ user.username.capitalize }} </h2>
-    <p>---- {{ user.email }} </p>
+    <h2> Welcome, {{ user_profile }} </h2>
+    <p> @{{ user_profile.user.username.lower }} </p>
+    <p>---- {{ user_profile.user.email }} </p>
+    
 
     <hr>
 

@@ -10,7 +10,7 @@ from django.dispatch import receiver
 # Create your models here.
 
 class UserProfile(models.Model):
-    display_name = models.CharField(max_length=100)
+    display_name = models.CharField(max_length=100, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     followers = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='following')
 
@@ -21,8 +21,15 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"{self.user.username.capitalize()}"
     
-    def display_name(self):
-        return f"{self.user.username}"
+    """ def set_display_name(self, name):
+        if name:
+            self.display_name = name
+            pass
+        else:
+            if self.display_name == None: """
+
+    
+    
 
 
 

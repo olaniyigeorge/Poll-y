@@ -13,8 +13,8 @@
 
 
 ## ISSUES
-1. Redirect users back to the last page(profile page or homepage) after deleting a poll
-2. Show a message reads "Only poll authors can delete polls" when users try to delete a poll they didn't create
+1. 
+2. 
 3. Fix the ***MultiValueDictKeyError at /vote/: 'option_pk'*** error on hitting `vote` without choosing an option.
 4. Users should be able to go to their profile page directly from anywhere in the app. At the moment, users  won't be taken to their page on clicking on the profile button from another user's profile page but will remain in the that user's page.   
 
@@ -23,4 +23,6 @@
 
 
 ## ADDED
-1. 
+1. Fixed issue ***No.4*** by passing `request.user` to the profile route instead of just `user` which might cause conflict
+when the authenticated user is on another user's page 
+2. Fixed issue ***No.3*** by try catching any error that might occur while getting `request.POST['option.pk']` and redirecting to the previous page with `request.META.get('HTTP_REFERER', reverse('poll:home'))` 

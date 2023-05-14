@@ -167,7 +167,11 @@ def add_question(request):
 @login_required(login_url='users/login')
 def vote(request):
     if request.method == "POST":
-        selected_choice_pk = request.POST['option_pk']
+    
+        try:
+            selected_choice_pk = request.POST['option_pk']
+        except:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('poll:home')))
         
         option = get_object_or_404(Choice, pk=selected_choice_pk)
         question = option.question

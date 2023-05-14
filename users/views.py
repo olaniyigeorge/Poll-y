@@ -68,6 +68,9 @@ def profile(request, username):
     if username in ['logout', 'login', 'signup']:
         return HttpResponseRedirect(reverse(f"users:{username}"))
     
+    auth_user = request.user
+
+
     user = get_object_or_404(User, username=username)
     user_profile = get_object_or_404(UserProfile, user= user)
 
@@ -81,6 +84,7 @@ def profile(request, username):
     user_questions = Question.objects.filter(author = user_profile)
     return render(request, 'users/user.html', {
         'user': user,
+        'user_profile': user_profile,
         'questions': user_questions,
         "followers": user_followers,
         'followings': user_following
