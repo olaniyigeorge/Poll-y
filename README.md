@@ -16,6 +16,16 @@ My goal is to build a poll app that allows users to create and participate in po
 
 
 -- Interested individuals are welcome to contribute to this project
+## How to run locally/contribute
+
+1. Clone the repo using `git clone https://github.com/olaniyigeorge/Poll-y.git`
+2. Create a virtual environment in the cloned repo directory with `python -m venv env`
+3. Activate the virtual environment `env\Scripts\activate`
+4. Install the dependencies `pip install -r requirements.txt`
+5. Run `python manage.py migrate` to setup the database
+6. Run the server from the command line(in the project directory) with `python manage.py runserver`
+7. Lastly, navigate to `http://127.0.0.1:8000/` in your web browser 
+
 
 
 ### Some Intented UIs
