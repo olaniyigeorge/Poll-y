@@ -167,7 +167,7 @@ def add_question(request):
 @login_required(login_url='users/login')
 def vote(request):
     if request.method == "POST":
-    
+        #catch the error raised if no option was selected
         try:
             selected_choice_pk = request.POST['option_pk']
         except:
@@ -187,13 +187,13 @@ def vote(request):
         option.voters.add(user)
         option.save()
 
-        #Add notification to poll author's notifications
-        new_notification = Notification(owner=question.author, action='vote', action_receiver=question, from_who=user)
-        new_notification.save()
-        
-
-        return HttpResponseRedirect(reverse('poll:poll_details', args=(question.pk,)))
+    #Add notification to poll author's notifications
+    new_notification = Notification(owner=question.author, action='vote', action_receiver=question, from_who=user)
+    new_notification.save()
     
+
+    return HttpResponseRedirect(reverse('poll:poll_details', args=(question.pk,)))
+
 def delete(request, question_id):
     #get question
     question = get_object_or_404(Question, pk=question_id)
@@ -216,9 +216,9 @@ def comment(request):
         comment = Comment(comment_text=request.POST["comment_text"],  question=question, author=comment_author)
         comment.save()
 
-        #Add notification to poll author's notifications
-        new_notification = Notification(owner=question.author, action='comment', action_receiver=question, from_who=comment_author)
-        new_notification.save()
+    #Add notification to poll author's notifications
+    new_notification = Notification(owner=question.author, action='comment', action_receiver=question, from_who=comment_author)
+    new_notification.save()
 
     return HttpResponseRedirect(reverse("poll:poll_details", args=(question.id,)))
 
@@ -231,9 +231,9 @@ def like(request):
         question.likers.add(liker)
         
 
-        #Add notification to poll author's notifications
-        new_notification = Notification(owner=question.author, action='like', action_receiver=question, from_who=liker)
-        new_notification.save()
+    #Add notification to poll author's notifications
+    new_notification = Notification(owner=question.author, action='like', action_receiver=question, from_who=liker)
+    new_notification.save()
 
     return HttpResponseRedirect(reverse("poll:poll_details", args=(question.id,)))
 
@@ -242,8 +242,7 @@ def like(request):
 @login_required(login_url='users:login')
 def notifications(request):
     #get the auth'd user
-    user = request.user
-    user_profile = get_object_or_404(UserProfile, user=user)
+    user_profile = get_object_or_404(UserProfile, user=request.user)
 
     notifications = Notification.objects.filter(owner=user_profile)
 
@@ -256,8 +255,8 @@ def notifications(request):
 @login_required(login_url='users:login')
 def activities(request):
     #get the auth'd user
-    user = request.user
-    user_profile = get_object_or_404(UserProfile, user=user)
+
+    user_profile = get_object_or_404(UserProfile, user=request.user)
 
     activities = Notification.objects.filter(from_who=user_profile)
 
@@ -266,4 +265,20 @@ def activities(request):
         "poll/notifications.html", 
         {"notifications": activities}
         )
+
+
+def connections(request):
+    # Get the signed in user
+    this_user = get_object_or_404(UserProfile, user = request.user)
+    
+    # Get the follower and following
+    user_followers = this_user.followers.all()
+    user_following = this_user.following.all()
+
+    # Return the connections page, passing in the followers and following of the user
+
+    return render(request, 'poll/connections.html', {
+        'followers': user_followers,
+        'followings': user_following
+    })
 

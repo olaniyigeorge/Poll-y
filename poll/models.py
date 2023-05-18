@@ -50,10 +50,10 @@ class Choice(models.Model):
 
 class Notification(models.Model):
     ACTION_CHOICES = [
-        ('commented on', 'Comment'),
-        ('liked', 'Like'),
-        ('voted on', 'Vote'),
-        ('toggled connect', 'Follow')
+        ('comment', 'Comment'),
+        ('like', 'Like'),
+        ('vote', 'Vote'),
+        ('follow', 'Follow')
     ]
 
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='notifications')

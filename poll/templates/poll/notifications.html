@@ -9,10 +9,47 @@
 
 {% block body %}
 
-    {% for notification in notifications %}
+    <ul>
+        {% for notification in notifications %}
         
-            {{ notification }}
-        
-    {% endfor %}
+            <li> 
+                {% if notification.action == "follow" %}
+                
+                    <p> 
+                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username }}</a>
+                        followed
+                        <a href="{% url 'users:profile' notification.owner.user.usenname %}"> You </a>
+                    </p>
+                {% elif notification.action == "vote" %}
+                    
+                    <p> 
+                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username }}</a>  
+                        voted on your poll
+                        <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
+                    </p>
+
+                {% elif noitfication.action == "like" %}
+                    
+                    <p> 
+                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username }}</a>
+                        liked you poll
+                        <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
+                    </p>
+
+                {% elif notification.action == "comment" %}
+                    
+                    <p> 
+                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username }}</a>
+                        commented on your poll
+                        <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
+                    </p>
+                {% endif %}
+                
+                {{ notification }}
+            </li>
+
+        {% endfor %}
+    </ul>
+    
 
 {% endblock %}

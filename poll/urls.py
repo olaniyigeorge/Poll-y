@@ -17,5 +17,6 @@ urlpatterns = [
     path("comment", views.comment, name="comment"),
     path("like", views.like, name="like"),
     path('notifications', views.notifications, name='notifications'),
-    path('notifications/activities', views.activities, name='activities')
+    path('notifications/activities', views.activities, name='activities'),
+    path("connections", views.connections, name="connections")
 ]

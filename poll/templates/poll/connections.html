@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title> 
+            Your Connections
+        </title>
+    </head>
+    
+
+    <body>
+    
+        <div class="connections list">
+                <p>  {{ followers|length }}  
+                    Follower(s)
+                </p>
+                
+                <ul>
+                    {% for follower in followers %}
+                        
+                        <div class="follower_user">
+                            <li> <a href="{% url 'users:profile' follower.user.username %}"> {{ follower.display_name }} </a> </li> 
+                            <a href="{% url 'users:connect' follower.user.pk %}"> Unfollow </a>
+                        </div>
+                        
+                        {% empty %}
+                            <i> Nobody has followed you yet.</i>
+                        
+        
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <hr>
+
+            <div class="connections list">
+                <p>  {{ followings|length }}  
+                    Following(s)
+                </p>
+                
+                <ul>
+                    {% for following in followings %}
+                        
+                        <div class="following_user">
+                            <li> <a href="{% url 'users:profile' following.user.username %}"> {{ following.display_name }} </a> </li> 
+                            
+                        </div>
+                        
+                        {% empty %}
+                                <i> You haven't followed anybody yet </i>
+        
+                    {% endfor %}
+                </ul>
+            </div>
+
+        <br>
+        <br>
+        
+        <a href="{% url 'users:profile' request.user.username %}"> Go Back </a>
+
+    </body>
+
+
+</html>
