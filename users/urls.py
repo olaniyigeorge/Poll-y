@@ -14,4 +14,5 @@ urlpatterns = [
     path("connect/<int:user_id>", views.connect, name='connect')
     
     
+    
 ] 

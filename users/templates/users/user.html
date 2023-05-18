@@ -8,44 +8,21 @@
 
 {% block body %}
 
-    <h2> Welcome, {{ user_profile }} </h2>
+    <h2> Welcome, {{ user_profile.display_name }} </h2>
     <p> @{{ user_profile.user.username.lower }} </p>
     <p>---- {{ user_profile.user.email }} </p>
     
 
     <hr>
 
-    <div id="connect">
-        <p>  {{ followers|length }}  Follower(s)</p>
-        <ul>
-            {% for follower in followers %}
-                
-                {% empty %}
-                    <i> You don't have any followers</i>
+    <div id="connections_count">
+        <p>  {{ followers|length }} </p> <a href="{% url 'poll:connections' %}"> Follower(s) </a> 
 
-                <li> <a href="{% url 'users:profile' follower %}"> {{follower}} </a> </li>
-
-                
-
-            {% endfor %}
-        </ul>
-
-        <p>  {{ followings|length }}  Following(s) </p>
-        <ul>
-            {% for following in followings %}
-                
-                {% empty %}
-                    <i> You don't have any followers</i>
-
-                <li> <a href="{% url 'users:profile' following %}"> {{follower}} </a> </li>
-
-                
-
-            {% endfor %}
-        </ul>
-        
+        <p>  {{ followings|length }} </p> <a href="{%url 'poll:connections' %}"> Following(s) </a> 
+    
     </div>
     
+
     <hr>
     
     <h3>

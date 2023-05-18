@@ -65,8 +65,10 @@ def profile(request, username):
     if username  == 'AnonymousUser':
         return HttpResponseRedirect(reverse(f"users:login"))
     
-    if username in ['logout', 'login', 'signup']:
+    if username in ['logout', 'login', 'signup', 'connections']:
         return HttpResponseRedirect(reverse(f"users:{username}"))
+    
+    
     
     auth_user = request.user
 
@@ -90,6 +92,8 @@ def profile(request, username):
         'followings': user_following
 
     })
+
+
 
 
 
