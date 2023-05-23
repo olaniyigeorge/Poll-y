@@ -2,7 +2,7 @@
 
 
 - 1. Write form and view to add new poll
-2. Add functionality to search for poll
+- 2. Add functionality to search for poll
 
 - 3. Add functionality to vote on polls
 - 4. Write user profile views and template
@@ -13,16 +13,18 @@
 
 
 ## ISSUES
-1. 
-2. 
-3. Fix the ***MultiValueDictKeyError at /vote/: 'option_pk'*** error on hitting `vote` without choosing an option.
-4. Users should be able to go to their profile page directly from anywhere in the app. At the moment, users  won't be taken to their page on clicking on the profile button from another user's profile page but will remain in the that user's page.   
+1. In an attempt to properly implement the notification page, I encountered errors which do not seem consistent making it difficult to pinpoint the cause. Namely;
+    - A situation where not all of the user's notifications is properly formatted according to the templates in `notifications.html`
 
-5. Add Display name to the UserProfile model to display on profile page
+    - `Reverse for 'profile' with arguments '('',)' not found. 1 pattern(s) tried: ['users/(?P<username>[^/]+)$']` 
+    I think its getting a user without an id(`pk`) which is not supposed to happen considering all users should have an *id* as the `pk`.
+    Note: This error isn't raised all the time so i think the problem is with the user objects ive created and not the templates or view files
+    
+    
 
 
 
 ## ADDED
-1. Fixed issue ***No.4*** by passing `request.user` to the profile route instead of just `user` which might cause conflict
-when the authenticated user is on another user's page 
-2. Fixed issue ***No.3*** by try catching any error that might occur while getting `request.POST['option.pk']` and redirecting to the previous page with `request.META.get('HTTP_REFERER', reverse('poll:home'))` 
+1. 
+
+

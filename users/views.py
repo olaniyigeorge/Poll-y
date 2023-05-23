@@ -83,6 +83,7 @@ def profile(request, username):
     user_following = user_profile.following.all()
 
     #Get user's questions
+    #user_questions = user_profile.questions_asked.all()
     user_questions = Question.objects.filter(author = user_profile)
     return render(request, 'users/user.html', {
         'user': user,
@@ -95,30 +96,36 @@ def profile(request, username):
 
 
 
-
-
-
-
 #Register new user
 def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
+            
+            #TODO Refresh user from database, creating userprofile in effect 
             user = form.save()
             user.refresh_from_db()
-            print('form saved')
+            
+            #save user
             user.save()
-            print('user saved')
+            
+            # Get username and password for authentication
             username = form.cleaned_data.get('username')
-            #email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
 
-            user = authenticate(username=username.lower(), password=raw_password)
+            # Log user in with username in lowercase and raw password
+            user = authenticate(username=username, password=raw_password)
             login(request, user)
 
-            return HttpResponseRedirect(reverse("users:index"))      
+            return HttpResponseRedirect(reverse("users:index"))     
+        else:
+             return render(request, "users/signup.html", {
+        'form': form,
+        'message': 'Form not valid'
+    })
     else:
         form = SignUpForm()
+ 
     return render(request, "users/signup.html", {
         'form': form
     })

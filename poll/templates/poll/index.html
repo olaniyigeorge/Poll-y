@@ -11,10 +11,19 @@
     <h1> Polls </h1>
 
     <ol>
-        {% for question in questions %}
-            <li>{{ question }}</li> 
-            <a href="{% url 'poll:poll_details' question.id %}"> View Poll </a>
-        {% endfor %}
+        {% if questions %}
+
+            {% for question in questions %}
+                <li>{{ question }}</li> 
+                <a href="{% url 'poll:poll_details' question.id %}"> View Poll </a>
+            {% endfor %}
+
+        {% else %}
+
+            <p> There are no polls yet</p>
+        
+        {% endif %}
+        
     </ol>
 
 

@@ -12,10 +12,15 @@
     <h1> Polls from following </h1>
 
     <ol>
-        {% for poll in latest_following_polls %}
-            <li>{{ poll }}</li> 
-            <a href="{% url 'poll:poll_details' poll.id %}"> View Poll </a>
-        {% endfor %}
+        {% if latest_following_polls %}
+
+            {% for poll in latest_following_polls %}
+                <li>{{ poll }}</li> 
+                <a href="{% url 'poll:poll_details' poll.id %}"> View Poll </a>
+            {% endfor %}
+        {% else %}
+            <p> Your network have no polls yet </p>
+        {% endif %}
     </ol>
 
 
