@@ -12,42 +12,44 @@
     <ul>
         {% for notification in notifications %}
         
+            {% if request.user.username != notification.from_who.user.username %}
+                <li>    
+                    {% if notification.action == "follow" %}
+                    
+                        <p> 
+                            <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
+                            followed
+                            <a href="{% url 'users:profile' notification.owner.user.username %}"> You </a>
+                        </p>
+                    {% elif notification.action == "vote" %}
+                        
+                        <p> 
+                            <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>  
+                            voted on your poll
+                            <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
+                        </p>
+
+                    {% elif notification.action == "like" %}
+                        
+                        <p> 
+                            <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
+                            liked your poll
+                            <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
+                        </p>
+
+                    {% elif notification.action == "comment" %}
+                        
+                        <p> 
+                            <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
+                            commented on your poll
+                            <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
+                        </p>
+                    {% endif %}
+                    
+                </li>
+            {% endif %}
+
         
-
-            <li>    
-                {% if notification.action == "follow" %}
-                
-                    <p> 
-                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
-                        followed
-                        <a href="{% url 'users:profile' notification.owner.user.usenname %}"> You </a>
-                    </p>
-                {% elif notification.action == "vote" %}
-                    
-                    <p> 
-                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>  
-                        voted on your poll
-                        <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
-                    </p>
-
-                {% elif notification.action == "like" %}
-                    
-                    <p> 
-                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
-                        liked your poll
-                        <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
-                    </p>
-
-                {% elif notification.action == "comment" %}
-                    
-                    <p> 
-                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
-                        commented on your poll
-                        <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
-                    </p>
-                {% endif %}
-                
-            </li>
 
         {% endfor %}
     </ul>

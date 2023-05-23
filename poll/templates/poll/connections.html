@@ -42,7 +42,7 @@
                     {% for following in followings %}
                         
                         <div class="following_user">
-                            <li> <a href="{% url 'users:profile' following.user.username %}"> {{ following.display_name }} </a> </li> 
+                            <li> <a href="{% url 'users:profile' following.user.username %}"> {{ following.user.username.capitalize }} </a> </li> 
                             
                         </div>
                         

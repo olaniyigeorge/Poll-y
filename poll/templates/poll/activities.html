@@ -11,50 +11,49 @@
 
     <ul>
         {% for notification in notifications %}
-        
-        
 
-            <li>    
-                {% if notification.action == "follow" %}
-                
-                    <p> 
-                        <a href="{%  url 'users:profile' notification.from_who.user.username %}"> You </a>
-                        followed
-                        <a href="{% url 'users:profile' notification.owner.user.usenname %}"> {{ notification.owner.user.username.capitalize }} </a>
-                    </p>
-                {% elif notification.action == "vote" %}
+            {% if request.user.username == notification.owner.user.username %}
+                <li>    
+                    {% if notification.action == "follow" %}
                     
-                    <p> 
-                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">You </a>  
-                        voted on 
-                        <a href="{%  url 'users:profile' notification.owner.user.username %}"> {{ notification.owner.user.username.capitalize }}'s </a> 
-                        poll
-                        <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
-                    </p>
+                        <p> 
+                            <a href="{%  url 'users:profile' notification.from_who.user.username %}"> You </a>
+                            followed
+                            <a href="{% url 'users:profile' notification.owner.user.usenname %}"> {{ notification.owner.user.username.capitalize }} </a>
+                        </p>
+                    {% elif notification.action == "vote" %}
+                        
+                        <p> 
+                            <a href="{%  url 'users:profile' notification.from_who.user.username %}">You </a>  
+                            voted on 
+                            <a href="{%  url 'users:profile' notification.owner.user.username %}"> {{ notification.owner.user.username.capitalize }}'s </a> 
+                            poll
+                            <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
+                        </p>
 
-                {% elif notification.action == "like" %}
+                    {% elif notification.action == "like" %}
+                        
+                        <p> 
+                            <a href="{%  url 'users:profile' notification.from_who.user.username %}">You </a>
+                            liked 
+                            <a href="{%  url 'users:profile' notification.owner.user.username %}"> {{ notification.owner.user.username.capitalize }}'s </a> 
+                            poll
+                            <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
+                        </p>
+
+                    {% elif notification.action == "comment" %}
+                        
+                        <p> 
+                            <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
+                            commented on 
+                            <a href="{%  url 'users:profile' notification.owner.user.username %}"> {{ notification.owner.user.username.capitalize }}'s </a> 
+                            poll
+                            <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
+                        </p>
+                    {% endif %}
                     
-                    <p> 
-                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">You </a>
-                        liked 
-                        <a href="{%  url 'users:profile' notification.owner.user.username %}"> {{ notification.owner.user.username.capitalize }}'s </a> 
-                        poll
-                        <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
-                    </p>
-
-                {% elif notification.action == "comment" %}
-                    
-                    <p> 
-                        <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
-                        commented on 
-                        <a href="{%  url 'users:profile' notification.owner.user.username %}"> {{ notification.owner.user.username.capitalize }}'s </a> 
-                        poll
-                        <a href="{% url 'poll:poll_details' notification.action_receiver.id %}"> {{notification.action_receiver.pk }} </a>
-                    </p>
-                {% endif %}
-                
-            </li>
-
+                </li>
+            {% endif %}
         {% endfor %}
     </ul>
     

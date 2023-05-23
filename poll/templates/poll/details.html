@@ -18,7 +18,7 @@
         {% csrf_token %}
         <ul>
         {%  for option in options %}
-            <input type="radio" name='option_pk' value= {{ option.pk }}  /> {{option.choice_text}} <strong>{{ option.votes }}</strong> <br> <br>
+            <input type="radio" name='option_pk' value= {{ option.pk }}  /> {{option.choice_text}} <strong>{{ option.voters.count }}</strong> <br> <br>
         {%  endfor %}
         </ul>
         <input type="submit" name="answer"  {% if not user.is_authenticated %} disabled {% endif %} value="Vote">
