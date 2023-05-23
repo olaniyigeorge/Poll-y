@@ -19,8 +19,8 @@
                     {% for follower in followers %}
                         
                         <div class="follower_user">
-                            <li> <a href="{% url 'users:profile' follower.user.username %}"> {{ follower.display_name }} </a> </li> 
-                            <a href="{% url 'users:connect' follower.user.pk %}"> Unfollow </a>
+                            <li> <a href="{% url 'users:profile' follower.user.username %}"> {{ follower.user.username.capitalize }} </a> </li> 
+                            
                         </div>
                         
                         {% empty %}
@@ -43,7 +43,7 @@
                         
                         <div class="following_user">
                             <li> <a href="{% url 'users:profile' following.user.username %}"> {{ following.user.username.capitalize }} </a> </li> 
-                            
+                            <a href="{% url 'users:connect' following.user.pk %}"> Unfollow </a>
                         </div>
                         
                         {% empty %}

@@ -9,19 +9,19 @@
 
 {% block body %}
 
-    <h1> Polls from following </h1>
+    <!--- <h1> Polls from following </h1> --->
 
-    <ol>
+    <ul>
         {% if latest_following_polls %}
 
             {% for poll in latest_following_polls %}
                 <li>{{ poll }}</li> 
-                <a href="{% url 'poll:poll_details' poll.id %}"> View Poll </a>
+                <a href="{% url 'poll:poll_details' poll.pk %}"> View Poll </a>
             {% endfor %}
         {% else %}
             <p> Your network have no polls yet </p>
         {% endif %}
-    </ol>
+    </ul>
 
 
 {% endblock %}

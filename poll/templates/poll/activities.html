@@ -12,14 +12,14 @@
     <ul>
         {% for notification in notifications %}
 
-            {% if request.user.username == notification.owner.user.username %}
+            {% if request.user.username == notification.from_who.user.username %}
                 <li>    
                     {% if notification.action == "follow" %}
                     
                         <p> 
                             <a href="{%  url 'users:profile' notification.from_who.user.username %}"> You </a>
                             followed
-                            <a href="{% url 'users:profile' notification.owner.user.usenname %}"> {{ notification.owner.user.username.capitalize }} </a>
+                            <a href="{% url 'users:profile' notification.owner.user.username %}"> {{ notification.owner.user.username.capitalize }} </a>
                         </p>
                     {% elif notification.action == "vote" %}
                         
