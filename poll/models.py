@@ -40,8 +40,10 @@ class Comment(models.Model):
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, default=None, related_name="options")
     choice_text = models.CharField(max_length=150)
+    
     #TODO Remove the votes field 
-    votes = models.IntegerField(default=0)
+    #votes = models.IntegerField(default=0)
+    
     voters = models.ManyToManyField(UserProfile, blank=True, related_name="my_votes")
 
     def __str__(self) -> str:

@@ -24,13 +24,23 @@ def home(request):
     this_user = get_object_or_404(UserProfile, user=request.user)
     
     following = this_user.following.all()
-    feed = []
+    
+    # Make a list and populate it with the last 5 polls from each of the users 
+    # this auth'd user is following
+    feed_content = []
     for person in following:
         latest_polls = Question.objects.filter(author=person).order_by("-pub_date")[:5]
         for poll in latest_polls:
-            feed.append(poll)
+            feed_content.append(poll)
 
-    return render(request, "poll/home.html", {'latest_following_polls': feed})
+    # Add the last 10 polls from other users whom this user isn't following if 
+    # the feed is empty
+    if len(feed_content) == 0:
+        latest_questions = Question.objects.order_by("-pub_date")[:10]
+        feed_content = feed_content + list(latest_questions) 
+
+
+    return render(request, "poll/home.html", {'latest_following_polls': feed_content})
 
 
 # Route to the polls details page
@@ -44,9 +54,11 @@ def poll_details(request, question_id):
     #Increment views upon poll details page request
     #  poll.views += 1
     
+    
+    #Loop through all the choices of this poll and add all the votes(numberof voters) together 
     total_vote_count= 0
     for _ in choices:
-        total_vote_count += _.votes
+        total_vote_count += _.voters.count()
 
     return render(request, "poll/details.html", {
         "question": question, 
@@ -183,7 +195,7 @@ def vote(request):
                 return HttpResponseRedirect(reverse('poll:poll_details', args=(question.pk,)))
         
         #Increment the votes and add voters if not
-        option.votes += 1
+        #option.votes += 1
         option.voters.add(user)
         option.save()
 
@@ -262,7 +274,7 @@ def activities(request):
 
     return render(
         request, 
-        "poll/notifications.html", 
+        "poll/activities.html", 
         {"notifications": activities}
         )
 
