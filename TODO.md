@@ -13,12 +13,7 @@
 
 
 ## ISSUES
-1. In an attempt to properly implement the notification page, I encountered errors which do not seem consistent making it difficult to pinpoint the cause. Namely;
-    - A situation where not all of the user's notifications is properly formatted according to the templates in `notifications.html`
-
-    - `Reverse for 'profile' with arguments '('',)' not found. 1 pattern(s) tried: ['users/(?P<username>[^/]+)$']` 
-    I think its getting a user without an id(`pk`) which is not supposed to happen considering all users should have an *id* as the `pk`.
-    Note: This error isn't raised all the time so i think the problem is with the user objects ive created and not the templates or view files
+1. 
     
     
 
@@ -27,4 +22,7 @@
 ## ADDED
 1. 
 
+
+<link rel="stylesheet" href="{% static 'css/script.css' %}">
+<script src="{% static 'js/script.js' %}">   </script>
 
