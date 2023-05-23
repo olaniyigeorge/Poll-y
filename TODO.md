@@ -16,13 +16,10 @@
 1. 
     
     
-
-
-
 ## ADDED
 1. 
 
 
-<link rel="stylesheet" href="{% static 'css/script.css' %}">
-<script src="{% static 'js/script.js' %}">   </script>
+`<link rel="stylesheet" href="{% static 'css/script.css' %}">`
+`<script src="{% static 'js/script.js' %}">   </script>`
 
