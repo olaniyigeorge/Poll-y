@@ -8,32 +8,15 @@ from poll.models import Question, Notification
 from .models import UserProfile, User
 from django.shortcuts import get_object_or_404
 
-from poll.views import index
-
-""" # Create your views here.
-def index(request):
- """    
 
 
 # Profile page views
 def index(request):
     if not request.user.is_authenticated:
         return render(request, "users/login.html")
+    
+    return HttpResponseRedirect(reverse("users:profile", args=(request.user.username,)))
 
-    user = request.user
-    user_profile = UserProfile.objects.get(user=user)
-
-    #Get user's followers
-    user_followers = user_profile.followers.all()
-
-    #Get user's questions
-    user_questions = Question.objects.filter(author = user_profile)
-    return render(request, 'users/user.html', {
-        'user': user,
-        'questions': user_questions,
-        "followers": user_followers
-
-    })
 
 
 #Login user
@@ -113,24 +96,20 @@ def signup(request):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
 
-            # Log user in with username in lowercase and raw password
+            # Log user in with username and raw password
             user = authenticate(username=username, password=raw_password)
             login(request, user)
 
             return HttpResponseRedirect(reverse("users:index"))     
         else:
-             return render(request, "users/signup.html", {
+            return render(request, "users/signup.html", {
         'form': form,
         'message': 'Form not valid'
     })
     else:
         form = SignUpForm()
  
-    return render(request, "users/signup.html", {
-        'form': form
-    })
-
-
+    return render(request, "users/signup.html", {'form': form})
 
 
 #Follow view
@@ -138,10 +117,10 @@ def connect(request, user_id):
     '''
     This function gets the signed in user, gets the user to be followed using the 
     user_id provided and adds the user to the followers or removes the user from 
-    the list of folowers '''
+    the list of folowers 
+    '''
     auth_user = get_object_or_404(UserProfile, user=request.user)
     followee = get_object_or_404(UserProfile, pk=user_id)
-
 
     if followee.followers.filter(user=request.user).exists():
         #Unfollow
@@ -149,16 +128,12 @@ def connect(request, user_id):
     else:
         #follow
         followee.followers.add(auth_user)
-    
-    
+        
     followee.save()
-
 
     #Add notification to poll author's notifications
     new_notification = Notification(owner=followee, action='follow', from_who=auth_user)
     new_notification.save()
 
-
-
-
     return HttpResponseRedirect(reverse("users:profile", args=(followee.user.username,)))
+

@@ -10,27 +10,24 @@ from django.dispatch import receiver
 # Create your models here.
 
 class UserProfile(models.Model):
-    display_name = models.CharField(max_length=100, default="")
+    display_name = models.CharField(max_length=100, null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     followers = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='following')
 
 
-    #voted_choices = models.ManyToManyField(Choice, related_name="voters")
-    #asked_questions = models.ManyToManyField(Question, related_name="author")
-
     def __str__(self):
         return f"{self.user.username}"
     
-    def display_name(self, name):
+    """ def display_name(self, name):
         if name:
             self.display_name = name
         else:
             if self.display_name == "":
                 self.display_name = self.user.username
         
-        
-        return f"{self.display_name}" 
+        return f"{self.display_name}"  """
    
+    
     
 
 
