@@ -25,7 +25,7 @@ def login_view(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username= username, password= password)
-        if user is not None:
+        if user:
             login(request, user)
             return HttpResponseRedirect(reverse("poll:home"))
         else:
@@ -53,7 +53,7 @@ def profile(request, username):
     
     
     
-    auth_user = request.user
+    auth_user_profile = get_object_or_404(UserProfile, user=request.user) 
 
 
     user = get_object_or_404(User, username=username)
@@ -73,7 +73,8 @@ def profile(request, username):
         'user_profile': user_profile,
         'questions': user_questions,
         "followers": user_followers,
-        'followings': user_following
+        'followings': user_following,
+        'authup': auth_user_profile
 
     })
 
@@ -125,15 +126,21 @@ def connect(request, user_id):
     if followee.followers.filter(user=request.user).exists():
         #Unfollow
         followee.followers.remove(auth_user)
+        
+        # create unfollow notification for the appropriate users
+        new_notification = Notification(owner=followee, action='unfollow', from_who=auth_user)
+        new_notification.save()
     else:
         #follow
         followee.followers.add(auth_user)
+
+        # create follow notification for the appropriate users
+        new_notification = Notification(owner=followee, action='follow', from_who=auth_user)
+        new_notification.save()
         
     followee.save()
 
-    #Add notification to poll author's notifications
-    new_notification = Notification(owner=followee, action='follow', from_who=auth_user)
-    new_notification.save()
-
     return HttpResponseRedirect(reverse("users:profile", args=(followee.user.username,)))
+
+
 
