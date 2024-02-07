@@ -17,15 +17,22 @@ class Question(models.Model):
 
     likers = models.ManyToManyField(UserProfile, blank=True, related_name="liked_polls")
 
+    def __str__(self):
+            return f"{self.question_text}"
+
     def toggle_status(self):
             if self.is_active:
                 self.is_active = False
             else:
                 self.is_active = True
 
-    def __str__(self):
-        return f"{self.question_text}"
+    def get_likes_count(self) -> int:
+        return self.likers.count()
 
+    def get_options(self) -> list:
+        return self.options.all() 
+
+    
     
 class Comment(models.Model):
     comment_text = models.CharField(max_length=500)
@@ -34,18 +41,33 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.comment_text}"
+    
+
+    def generate_notification(self):
+        n = Notification()
+        
+         
+
 
      
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, default=None, related_name="options")
     choice_text = models.CharField(max_length=150)
-
     voters = models.ManyToManyField(UserProfile, blank=True, related_name="my_votes")
+
 
     def __str__(self) -> str:
         return f"{self.choice_text}"
 
+    def get_voters_count(self):
+        return self.voters.count()
+    
+    def get_voters_(self):
+        return list(self.voters.all())
+    
+
+        
 
 
 class Notification(models.Model):
@@ -53,7 +75,8 @@ class Notification(models.Model):
         ('comment', 'Comment'),
         ('like', 'Like'),
         ('vote', 'Vote'),
-        ('follow', 'Follow')
+        ('follow', 'Follow'),
+        ('unfollow', 'Unfollow')
     ]
 
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='notifications')
