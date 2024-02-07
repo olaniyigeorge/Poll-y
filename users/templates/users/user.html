@@ -47,10 +47,17 @@
     </ol>
 
     {% if request.user != user %}
-        <form action="{% url 'users:connect' user.id  %}" method="post">
-            {% csrf_token %}
-            <input type="submit" name="connect" value="Connect">
-        </form>
+        {% if authup not in user_profile.followers.all %}
+            <form action="{% url 'users:connect' user.id  %}" method="post">
+                {% csrf_token %}
+                <input type="submit" name="connect" value="Follow">
+            </form>
+        {% elif authup in user_profile.followers.all %}
+            <form action="{% url 'users:connect' user.id  %}" method="post">
+                {% csrf_token %}
+                <input type="submit" name="connect" value="Unfollow">
+            </form>
+        {% endif %}
     {% endif %}
         
     <br>
