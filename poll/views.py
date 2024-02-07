@@ -45,7 +45,7 @@ def home(request):
 
 # Route to the polls details page
 def poll_details(request, question_id):
-a    
+  
     question = get_object_or_404(Question, pk=question_id)
     choices = question.get_options()
     poll_comments = Comment.objects.filter(question=question)
