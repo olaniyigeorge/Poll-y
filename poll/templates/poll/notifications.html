@@ -10,6 +10,16 @@
 {% block body %}
 
     <ul>
+        {% if not notifications %}
+        
+            <div id="NoNotifications">
+                <h1 > You have no notifications </h4>
+                <p> Engage in polls and connect with other users </p>
+            </div>
+        
+        {% endif %}
+
+
         {% for notification in notifications %}
         
             {% if request.user.username != notification.from_who.user.username %}
@@ -19,6 +29,13 @@
                         <p> 
                             <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
                             followed
+                            <a href="{% url 'users:profile' notification.owner.user.username %}"> You </a>
+                        </p>
+                    {% elif notification.action == "unfollow" %}
+                    
+                        <p> 
+                            <a href="{%  url 'users:profile' notification.from_who.user.username %}">{{ notification.from_who.user.username.capitalize }}</a>
+                            unfollowed
                             <a href="{% url 'users:profile' notification.owner.user.username %}"> You </a>
                         </p>
                     {% elif notification.action == "vote" %}
