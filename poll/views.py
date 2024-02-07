@@ -45,20 +45,15 @@ def home(request):
 
 # Route to the polls details page
 def poll_details(request, question_id):
-    
-
+a    
     question = get_object_or_404(Question, pk=question_id)
-    choices = question.options.all()
+    choices = question.get_options()
     poll_comments = Comment.objects.filter(question=question)
 
-    #Increment views upon poll details page request
-    #  poll.views += 1
-    
-    
     #Loop through all the choices of this poll and add all the votes(numberof voters) together 
     total_vote_count= 0
-    for _ in choices:
-        total_vote_count += _.voters.count()
+    for choice in choices:
+        total_vote_count += choice.get_voters_count()
 
     return render(request, "poll/details.html", {
         "question": question, 
@@ -261,8 +256,9 @@ def notifications(request):
     return render(
         request, 
         "poll/notifications.html", 
-        {"notifications": notifications}
-        )
+        {
+        "notifications": notifications
+         })
 
 @login_required(login_url='users:login')
 def activities(request):
@@ -275,8 +271,9 @@ def activities(request):
     return render(
         request, 
         "poll/activities.html", 
-        {"notifications": activities}
-        )
+        {
+        "notifications": activities
+         })
 
 
 def connections(request):
