@@ -17,7 +17,8 @@
     
     
 ## ADDED
-1. 
+1. Added `unfollow` to the action type in the notification models
+2. Added the `unfollow` option to correctly formar the appropriate notification type in the notification page
 
 
 `<link rel="stylesheet" href="{% static 'css/script.css' %}">`
