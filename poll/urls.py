@@ -1,7 +1,8 @@
 from django.urls import path
 
 from . import views
-
+from Polly import settings
+from django.conf.urls.static import static
 
 app_name = 'poll'
 
@@ -19,4 +20,4 @@ urlpatterns = [
     path('notifications', views.notifications, name='notifications'),
     path('notifications/activities', views.activities, name='activities'),
     path("connections", views.connections, name="connections")
-]
+] +  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
