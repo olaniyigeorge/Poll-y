@@ -24,3 +24,25 @@
 `<link rel="stylesheet" href="{% static 'css/script.css' %}">`
 `<script src="{% static 'js/script.js' %}">   </script>`
 
+
+
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./journal/**/*.{html,js}",
+    "./accounts/**/*.{html,js}"            
+],
+  theme: {
+    extend: {
+      colors: {
+        "mindcream": "#FFFFDB",
+        "mindpurple": "#700170",
+        "mindtextmetal": "#121212"
+
+      }
+    },
+  },
+  plugins: [],
+}
+
