@@ -1,14 +1,20 @@
+{% load static %}
+
 <!DOCTYPE html>
 
 <html lang='en'>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'poll/app.css' %}" />
+        
         {% block title %}
         {% endblock%}
     </head>
 
     <body>
-        <div id="top_nav">
-            <a href="{% url 'poll:index' %}"> Home </a> 
+        <header id="top_nav" class="bg-gray-900 flex items-center justify-between text-white">
+            <a href="{% url 'poll:index' %}" class="text-2xl font-bold"> Home </a> 
             <div id="search_group">
                 <form action="{% url 'poll:search' %}" method="get">
                     <input type="text" name="query" placeholder="Search Polly">
@@ -16,7 +22,7 @@
                 </form>
             </div>
             <a href="{% url 'poll:index' %}"> ooo </a>
-        </div>
+        </header>
 
         <hr>
         {% if user.is_authenticated %}
