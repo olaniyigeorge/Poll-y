@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 # Configuration to serve static files
-from django.conf import settings
+from Polly import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -26,4 +26,4 @@ urlpatterns = [
     path('', include('poll.urls')),
     path('users/', include('users.urls'))
 
-    ]    + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
+    ]    + static(settings.STATIC_URL)

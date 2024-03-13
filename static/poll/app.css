@@ -560,6 +560,14 @@ video {
   display: none;
 }
 
+.h-auto {
+  height: auto;
+}
+
+.w-full {
+  width: 100%;
+}
+
 .items-center {
   align-items: center;
 }
