@@ -130,3 +130,10 @@ dmypy.json
 
 */migrations
 */__pycache__
+
+
+node_modules/
+
+
+
+npx tailwindcss -i ./static/tailwind.css -o ./static/poll/app.css --watch
