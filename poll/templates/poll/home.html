@@ -2,7 +2,7 @@
 
 
 {% block title %}
-    <title> Following Feed </title>
+    <title> Poll-y: Home  </title>
 {% endblock%}
 
 
@@ -11,17 +11,22 @@
 
     <!--- <h1> Polls from following </h1> --->
 
-    <ul>
-        {% if latest_following_polls %}
+    <div class="bg-gray-950 w-full text-white">
+        <h1 class="w-full flex justify-center text-2xl font-bold p-3"> Polls from following </h1>
+        <ul>
+            {% if latest_following_polls %}
 
-            {% for poll in latest_following_polls %}
-                <li>{{ poll }}</li> 
-                <a href="{% url 'poll:poll_details' poll.pk %}"> View Poll </a>
-            {% endfor %}
-        {% else %}
-            <p> Your network have no polls yet </p>
-        {% endif %}
-    </ul>
-
+                {% for poll in latest_following_polls %}
+                    <li class="list-disc ml-6">
+                        <span>{{ poll }}</span> 
+                        <a  class="italic text-sm text-green-700" href="{% url 'poll:poll_details' poll.pk %}"> View Poll </a>
+                    </li>
+                    
+                {% endfor %}
+            {% else %}
+                <p> Your network have no polls yet </p>
+            {% endif %}
+        </ul>
+    </div>
 
 {% endblock %}
