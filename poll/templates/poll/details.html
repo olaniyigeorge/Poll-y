@@ -9,76 +9,93 @@
 
 {% block body %}
 
+    <div class="w-full bg-gray-950 text-white">
+        <div class="">
+        <h1> {{ question }} </h1>
 
+        <form action="{% url 'poll:vote' %}" method="post">
+            {% csrf_token %}
+            <ul>
+            {%  for option in options %}
+                <input type="radio" name='option_pk' value= {{ option.pk }}  /> {{option.choice_text}} <strong>{{ option.voters.count }}</strong> <br> <br>
+            {%  endfor %}
+            </ul>
+            <input type="submit" name="answer"  {% if not user.is_authenticated %} disabled {% endif %} value="Vote">
+        </form>
 
-    <h1> {{ question }} </h1>
-
-
-    <form action="{% url 'poll:vote' %}" method="post">
-        {% csrf_token %}
-        <ul>
-        {%  for option in options %}
-            <input type="radio" name='option_pk' value= {{ option.pk }}  /> {{option.choice_text}} <strong>{{ option.voters.count }}</strong> <br> <br>
-        {%  endfor %}
-        </ul>
-        <input type="submit" name="answer"  {% if not user.is_authenticated %} disabled {% endif %} value="Vote">
-    </form>
-
-    <form action="{% url 'poll:like' %}" method="post">
+        <form action="{% url 'poll:like' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="question" value={{ question.id }}>
             <input type="submit" name="like"  {% if not user.is_authenticated %} disabled {% endif %} value="Like">
-    </form>
-
-    <p> {{ count }} Votes </p>
-    <p> {{ question.likers.count }} Likes </p>
-    
-
-
-    {{ message }}
-
-
-    {% if request.user == question.author.user %}
-        <form action="{% url 'poll:delete' question.id  %}" method="post">
-            {% csrf_token %}
-            <input type="submit" name="delete" value="Delete Poll">
         </form>
-    {% endif %}
 
-
-    
-    
-    
-
-    <p>
-        Author:
-        <strong> 
-            <a href="{% url 'users:profile' question.author.user.username %}"> {{ question.author }} </a>  
-        </strong>
-    </p>
-
-
-    <hr>
-
-    <h3> Comments </h3>
-
-    <form action="{% url 'poll:comment' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="question" value={{ question.id }}>
-        <input type="text" name="comment_text" placeholder="Coment on this poll">
-        <input type="submit" name="comment" value="Post comment">
-    </form>
-
-
-    {% for comment in comments %}
-
-        <ul> 
-            <li> {{ comment.comment_text }} </li> 
-            <em> By: <a href="{% url 'users:profile' comment.author %}"> {{ comment.author }} </a>  </em>
-        </ul>
+        </div>
+        <div class="w-full">
+            <p> {{ count }} Votes </p>
+            <p> {{ question.likers.count }} Likes </p>
+            
         
+        
+            {{ message }}
+        
+        
+            {% if request.user == question.author.user %}
+                <form action="{% url 'poll:delete' question.id  %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="delete" value="Delete Poll">
+                </form>
+            {% endif %}
+        
+        
+            
+            
+            
+        
+            <p>
+                Author:
+                <strong> 
+                    <a href="{% url 'users:profile' question.author.user.username %}"> {{ question.author }} </a>  
+                </strong>
+            </p>
+        </div>
+    
+        <div class="w-full">
+            <hr>
 
-    {% endfor %}
+            <h3> Comments </h3>
+        
+            <form action="{% url 'poll:comment' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="question" value={{ question.id }}>
+                <input type="text" name="comment_text" placeholder="Coment on this poll">
+                <input type="submit" name="comment" value="Post comment">
+            </form>
+        
+        
+            {% for comment in comments %}
+        
+                <ul> 
+                    <li> {{ comment.comment_text }} </li> 
+                    <em> By: <a href="{% url 'users:profile' comment.author %}"> {{ comment.author }} </a>  </em>
+                </ul>
+                
+        
+            {% endfor %}
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+
+
+
+
+
+
 
 
 
