@@ -1,48 +1,51 @@
-{% load static %}
+    {% load static %}
 
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
-<html lang='en'>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{% static 'poll/app.css' %}" />
+    <html lang='en'>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="{% static 'poll/app.css' %}" />
 
-        {% block title %}
-        {% endblock%}
-    </head>
+            {% block title %}
+            {% endblock%}
+        </head>
 
-    <body>
-        <header id="top_nav" class="w-full h-auto bg-gray-900 flex items-center justify-between text-white">
-            <a href="{% url 'poll:index' %}" class="text-2xl font-bold"> Home </a> 
-            <div id="search_group">
-                <form action="{% url 'poll:search' %}" method="get">
-                    <input type="text" name="query" placeholder="Search Polly">
-                    <input type="submit" value="Search">
-                </form>
+        <body>
+            <header id="top_nav" class="w-full shadow py-2 px-6 h-auto bg-gray-950 flex items-center justify-between text-white">
+                <a href="{% url 'poll:index' %}" class="text-2xl font-bold"> Poll-y </a> 
+                <div id="search_group">
+                    <form action="{% url 'poll:search' %}" class="w-full rounded-md p-2=1 border flex bg-gray-100" method="get">
+                        <input type="text" name="query" class="p-2 w-full rounded" placeholder="Search Poll-y">
+                        <input type="submit" class="bg-gray-800 hover:bg-gray-700 h-full p-2 rounded-md" value="Search">
+                    </form>
+                </div>
+                <a href="{% url 'poll:index' %}"> ooo </a>
+            </header>
+
+    
+            <div id="Outlet" class="flex w-full h-screen">
+                {% if user.is_authenticated %}
+                <div id="side_nav" class="h-full pl-6 w-1/5 space-y-4 border-r border-gray-900 text-white block bg-gray-950">
+                    <a class="block" href="{% url 'poll:home' %}"> Home </a> 
+                    <a class="block" href="{% url 'users:profile' request.user %}"> Profile </a>
+                    <a class="block" href="{% url 'poll:notifications' %}"> Notifications </a>
+                    <a class="block" href="{% url 'poll:add_question' %}"> Create Poll </a>    
+                    <a class="block" href="{% url 'users:logout' %}"> Log Out </a>
+                </div>
+                {% endif %}
+                
+                {% block body %}
+                {% endblock%}
             </div>
-            <a href="{% url 'poll:index' %}"> ooo </a>
-        </header>
+            
 
-        <hr>
-        {% if user.is_authenticated %}
-            <div id="side_nav">
-                <a href="{% url 'poll:home' %}"> Home </a> 
-                <a href="{% url 'users:profile' request.user %}"> Profile </a>
-                <a href="{% url 'poll:notifications' %}"> Notifications </a>
-                <a href="{% url 'poll:add_question' %}"> Create Poll </a>    
-                <a href="{% url 'users:logout' %}"> Log Out </a>
-            </div>
-        {% endif %}
-        
-        {% block body %}
-        {% endblock%}
-
-        {% if not user.is_authenticated %}
-            <div id="bottom_auth_nav">
-                <a href="{% url 'users:login' %}"> Log in </a>    
-                <a href="{% url 'users:signup' %}"> Sign Up</a>
-            </div>
-        {% endif%}
-    </body>
-</html>
+            {% if not user.is_authenticated %}
+                <div id="bottom_auth_nav">
+                    <a href="{% url 'users:login' %}"> Log in </a>    
+                    <a href="{% url 'users:signup' %}"> Sign Up</a>
+                </div>
+            {% endif%}
+        </body>
+    </html>
