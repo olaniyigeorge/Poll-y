@@ -8,32 +8,36 @@
 
 
 {% block body %}
-    <h1> Search Results </h1>
+    <div class="w-full bg-gray-900 text-white p-2">
 
-    <h3> Questions ({{ question_results|length }})</h3>
-    <ol>
-        {% for poll in question_results %}
-            <li>{{ poll }}</li> 
-            <a href="{% url 'poll:poll_details' poll.id %}"> View Poll </a>
-        {% endfor %}
-    </ol>
+        <h1 class="flex w-full items-center justify-center text-2xl font-medium"> Search Results </h1>
 
-    <h3> People ({{ people_results|length }})</h3>
-    <ol>
-        {% for person in people_results %}
-            <li>{{ person.user.username }}</li> 
-            <a href="{% url 'users:profile' person.user.username %}"> View Person </a>
-        {% endfor %}
-    </ol>
+        <h3 class="text-xl font-bold underline underline-offset-2 text-green-700"> Questions ({{ question_results|length }})</h3>
+        <ol>
+            {% for poll in question_results %}
+                <li class="list-disc ml-6">
+                    <span>{{ poll }}</span> 
+                    <a  class="italic text-sm text-green-700" href="{% url 'poll:poll_details' poll.pk %}"> View Poll </a>
+                </li>
+            {% endfor %}
+        </ol>
 
-    <h3> Choices ({{ choice_results|length }})</h3>
-    <ol>
-        {% for choice in choice_results %}
-            <li>{{ choice.choice_text }}</li> 
-            <a href="{% url 'poll:poll_details' choice.question.id %}"> View Poll </a>
-        {% endfor %}
-    </ol>
+        <h3 class="text-xl font-bold underline underline-offset-2 text-green-700"> People ({{ people_results|length }})</h3>
+        <ol>
+            {% for person in people_results %}
+                <li>{{ person.user.username }}</li> 
+                <a href="{% url 'users:profile' person.user.username %}"> View Person </a>
+            {% endfor %}
+        </ol>
 
+        <h3 class="text-xl font-bold underline underline-offset-2 text-green-700"> Choices ({{ choice_results|length }})</h3>
+        <ol>
+            {% for choice in choice_results %}
+                <li>{{ choice.choice_text }}</li> 
+                <a href="{% url 'poll:poll_details' choice.question.id %}"> View Poll </a>
+            {% endfor %}
+        </ol>
 
+    </div>
 
 {% endblock %}

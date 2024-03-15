@@ -8,18 +8,23 @@
 
 {% block body %}
 
-    <h2> Welcome, {{ user_profile.display_name }} </h2>
+    <div class="text-white p-2 bg-gray-950 w-full">
+
+
+    <h2> Welcome, {% if user_profile.display_name %} {{user_profile.display_name}} {% else %} {{ user_profile.user.username }} {% endif %} </h2>
     <p> @{{ user_profile.user.username.lower }} </p>
     <p>---- {{ user_profile.user.email }} </p>
     
 
     <hr>
 
-    <div id="connections_count">
+    <div id="connections_count" class="w-full flex space-x-5">
+        <div class="">
+            
+        </div>
         <p>  {{ followers|length }} <a href="{% url 'poll:connections' %}"> Follower(s) </a>   </p> 
 
         <p>  {{ followings|length }} <a href="{%url 'poll:connections' %}"> Following(s) </a>  </p> 
-    
     </div>
     
 
@@ -67,5 +72,7 @@
         <a href="{% url 'users:logout' %}"> Logout </a>
 
     {% endif %}
+
+    </div>
     
 {% endblock %}
