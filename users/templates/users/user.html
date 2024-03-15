@@ -10,68 +10,74 @@
 
     <div class="text-white p-2 bg-gray-950 w-full">
 
-
-    <h2> Welcome, {% if user_profile.display_name %} {{user_profile.display_name}} {% else %} {{ user_profile.user.username }} {% endif %} </h2>
-    <p> @{{ user_profile.user.username.lower }} </p>
-    <p>---- {{ user_profile.user.email }} </p>
-    
-
-    <hr>
-
-    <div id="connections_count" class="w-full flex space-x-5">
-        <div class="">
-            
+        <div class="py-3 w-full">
+            <h2 class="text-2xl font-medium"> Welcome, {% if user_profile.display_name %} {{user_profile.display_name}} {% else %} {{ user_profile.user.username }} {% endif %} </h2>
+            <div class="w-full flex justify-between">
+                <p class="text-gray-500"> @{{ user_profile.user.username }} </p>
+                <button onclick="" class="text-sm"> {{ user_profile.user.email }} </button>
+            </div>
         </div>
-        <p>  {{ followers|length }} <a href="{% url 'poll:connections' %}"> Follower(s) </a>   </p> 
-
-        <p>  {{ followings|length }} <a href="{%url 'poll:connections' %}"> Following(s) </a>  </p> 
-    </div>
-    
-
-    <hr>
-    
-    <h3>
-        <i> My Polls... ({{ questions|length }})</i>
-    </h3>
-    
-    <h3>
-        <a href="{% url 'poll:activities' %}"> Activities </a>
-    </h3>
-
-    
-    <hr>
-    <ol>
-    {% for question in questions %}
-    
-        <li> {{ question.question_text }} </li>
-        <a href="{% url 'poll:poll_details' question.id %}"> View Poll </a>
-
-    {% empty %}
-        <i> You haven't created any polls </i>
-    {% endfor %}
-    </ol>
-
-    {% if request.user != user %}
-        {% if authup not in user_profile.followers.all %}
-            <form action="{% url 'users:connect' user.id  %}" method="post">
-                {% csrf_token %}
-                <input type="submit" name="connect" value="Follow">
-            </form>
-        {% elif authup in user_profile.followers.all %}
-            <form action="{% url 'users:connect' user.id  %}" method="post">
-                {% csrf_token %}
-                <input type="submit" name="connect" value="Unfollow">
-            </form>
-        {% endif %}
-    {% endif %}
         
-    <br>
+        <hr class="border-gray-900 ">
 
-    {% if request.user == user %}
+        <div id="connections_count" class="w-full flex justify-center py-3 ">
+            <div class="w-1/2 flex justify-around space-x-5">
+                <p>  {{ followers|length }} <a href="{% url 'poll:connections' %}" class="text-gray-500"> Follower(s) </a>   </p> 
 
-        <a href="{% url 'users:logout' %}"> Logout </a>
+                <p>  {{ followings|length }} <a href="{%url 'poll:connections' %}" class="text-gray-500"> Following(s) </a>  </p> 
+            
+            </div>
+        </div>
+        
 
-    {% endif %}
+        <hr class="border-gray-900 ">
+    
+        <div class="w-full flex items-center justify-between py-3 px-4 ">
+            <h3 class="italic">
+                 My Polls... ({{ questions|length }})
+            </h3>
+            
+            <h3>
+                <a href="{% url 'poll:activities' %}"> Activities </a>
+            </h3>
+        </div>
+
+
+    
+        <hr class="border-gray-900 ">
+        <ol>
+        {% for question in questions %}
+        
+            <li> {{ question.question_text }} </li>
+            <a href="{% url 'poll:poll_details' question.id %}"> View Poll </a>
+
+        {% empty %}
+            <i> You haven't created any polls </i>
+        {% endfor %}
+        </ol>
+
+        {% if request.user != user %}
+            {% if authup not in user_profile.followers.all %}
+                <form action="{% url 'users:connect' user.id  %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="connect" value="Follow">
+                </form>
+            {% elif authup in user_profile.followers.all %}
+                <form action="{% url 'users:connect' user.id  %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="connect" value="Unfollow">
+                </form>
+            {% endif %}
+        {% endif %}
+            
+        <br>
+
+        {% if request.user == user %}
+            <div class="w-full flex justify-end">
+                <a href="{% url 'users:logout' %}" class="rounded-md bg-red-500 px-3 py-1"> Logout </a>
+            </div>
+            
+        {% endif %}
 
     </div>
     
