@@ -2,45 +2,48 @@
 
 
 {% block title %}
-    <title> Add Question </title>
+    <title> Add Options </title>
 {% endblock %}
 
 
 
 {% block body %}
 
-    {% if message %}
-        {{ message }}
-    {% endif %}
-
-    <p>
-        Add options for the question...
-    </p>
-
-    <strong>
-        {{ question.question_text }}
-    </strong>
-
-    <br>
-
-    <form action="{% url 'poll:add_choices' %}" method="post">
-        {% csrf_token %}
-        
-        {% for field in choices_form %}
-        <p>
-            {{ field.label_tag}} <br>
-            {{ field }}
-
-            {% if field.help_text %}
-                {{ field.help_text }}
+    <div class="text-white w-full">
+        {% if message %}
+                {{ message }}
             {% endif %}
-            {% for error in field.errors %}
-                {{ error }}
-            {% endfor %}
-        </p>
-        {% endfor %}
-        <input type="submit" value="Add Choices">
-    </form>
+
+            <p>
+                Add options for the question...
+            </p>
+
+            <strong>
+                {{ question.question_text }}
+            </strong>
+
+            <br>
+
+            <form action="{% url 'poll:add_choices' %}" method="post">
+                {% csrf_token %}
+                
+                {% for field in choices_form %}
+                <p>
+                    {{ field.label_tag}} <br>
+                    <span class="text-gray-900"> {{ field }}</span>
+
+                    {% if field.help_text %}
+                        {{ field.help_text }}
+                    {% endif %}
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </p>
+                {% endfor %}
+                <input type="submit" value="Add Choices">
+            </form>
+    </div>
+    
 
 
 
