@@ -87,7 +87,8 @@ def search(request):
     return render(request, "poll/search.html", {
         "question_results": question_results,
         "people_results": people_results,
-        "choice_results": choice_results
+        "choice_results": choice_results,
+        "results_length": len(question_results) + len(people_results) + len(choice_results)
 
         })
 
