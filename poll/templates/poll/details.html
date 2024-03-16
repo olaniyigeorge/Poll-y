@@ -12,31 +12,38 @@
 
     <div class="w-full bg-gray-950 text-white p-2">
         <div class="">
-        <h1 class="text-xl font-medium"> {{ question }} </h1>
+            <h1 class="text-xl font-medium"> {{ question }} </h1>
 
-        <form action="{% url 'poll:vote' %}" method="post">
-            {% csrf_token %}
-            <ul class="flex-col">
-            {%  for option in options %}
-                <input class="p-2 w-full flex justify-between items-center rounded border border-white hover:font-medium hover:scale-105 transition-all selected:text-green-700" type="radio" name='option_pk' value= {{ option.pk }}  /> {{option.choice_text}} <strong>{{ option.voters.count }}</strong> 
-            {%  endfor %}
-            </ul>
-            <input type="submit" name="answer"  {% if not user.is_authenticated %} disabled {% endif %} value="Vote">
-        </form>
+            <form action="{% url 'poll:vote' %}" method="post">
+                {% csrf_token %}
+                <ul class="flex-col gap-2">
+                {%  for option in options %}
+                    <li class="hover:font-medium  w-full py-2 flex justify-between items-center">
+                        <span class="flex ">
+                            <input class="p-2 selection:text-green-700 " type="radio" name='option_pk' value= {{ option.pk }}  /> 
+                            <p class="ml-3">{{option.choice_text}}</p> 
+                        </span>
+                    
+                    <p class="font-bold">{{ option.voters.count }}</p> 
+                    </li>
+                {%  endfor %}
+                </ul>
+                <input type="submit" class="bg-green-700 text-white py-1 px-2 rounded-md " name="answer"  {% if not user.is_authenticated %} disabled {% endif %} value="Vote">
+            </form>
 
-        <form action="{% url 'poll:like' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="question" value={{ question.id }}>
-            <input type="submit" name="like"  {% if not user.is_authenticated %} disabled {% endif %} value="Like">
-        </form>
+            <form action="{% url 'poll:like' %}" method="post" class="mt-2">
+                {% csrf_token %}
+                <input type="hidden" name="question" value={{ question.id }}>
+                <input type="submit"  class="bg-green-700 text-white py-1 px-3 rounded-md "  name="like"  {% if not user.is_authenticated %} disabled {% endif %} value="Like">
+            </form>
 
         </div>
         <div class="w-full">
-            <p> {{ count }} Votes </p>
-            <p> {{ question.likers.count }} Likes </p>
+            <p class="text-gray-500"> <span class="text-white"> {{ count }} </span>Votes </p>
+            <p class="text-gray-500"> <span class="text-white"> {{ question.likers.count }}</span> Likes </p>
             
         
-        
+            
             {{ message }}
         
         
