@@ -10,21 +10,47 @@
 {% block body %}
     <!--- <h1> Polls </h1> --->
 
-    <ol>
-        {% if questions %}
-
-            {% for question in questions %}
-                <li>{{ question }}</li> 
-                <a href="{% url 'poll:poll_details' question.id %}"> View Poll </a>
-            {% endfor %}
-
-        {% else %}
-
-            <p> There are no polls yet</p>
+    <div class="bg-gray-950 text-white w-full h-full ">
+        <div class="w-full flex justify-center items-center mt-20 p-10">
+            <div class="w-1/2 text-7xl font-bold">
+                Get started with <span class="font-extrabold text-green-700">Poll-y</span>. Create polls and extract insights from poll results.
+            </div>
+            <div class="w-1/2 space-y-5">
+                <a href="{% url 'users:login' %}" class="p-3 w-full flex justify-center items-center hover:scale-110 transition ease-in-out delay-75 hover:bg-green-800 bg-green-700 drop-shadow-md rounded-lg"> Get started</a>
+            
+                <hr class="my-10 mt-20">
+                <ol class="mx-auto px-5 w-full justify-center  ">
+                
         
-        {% endif %}
+                {% if questions %}
         
-    </ol>
+                    {% for question in questions %}
+    
+                        <li class="list-disc list-item space-x-3 hover:text-green-700 hover:italic x">
+                            
+                            <a href="{% url 'poll:poll_details' question.id %}" class> 
+                                <p>{{ question }}</p>  
+                            </a>
+                        </li>
+                    {% endfor %}
+        
+                {% else %}
+        
+                    <p> There are no polls yet</p>
+                
+                {% endif %}
+                
+            </ol>
+            
+        </div>
+        
+        </div>
+        
+        
+
+    </div>
+
+
 
 
     
