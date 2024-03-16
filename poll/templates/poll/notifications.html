@@ -12,7 +12,7 @@
             
     <div id="NoNotifications" class="text-white flex w-full justify-center items-center">
         <div class="w-5/6">
-            <h1 class="text-7xl w-full items-center justify-center "> You have no notifications! </h4>
+            <h1 class="text-7xl  w-full items-center justify-center "> You have no notifications! </h4>
             <p class="w-full flex items-center justify-center"> Engage in polls and connect with other users </p>
         </div>
         
@@ -20,11 +20,11 @@
 
     {% endif %}
 
-    {% if notification %}
-        <ul class="w-full">
+    {% if notifications %}
+        <ul class="w-full text-white">
 
                 {% for notification in notifications %}
-                
+                    <p> {{notification}}</p>
                     {% if request.user.username != notification.from_who.user.username %}
                         <li>    
                             {% if notification.action == "follow" %}
