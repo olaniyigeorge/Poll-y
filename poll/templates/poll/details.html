@@ -34,7 +34,7 @@
             <form action="{% url 'poll:like' %}" method="post" class="mt-2">
                 {% csrf_token %}
                 <input type="hidden" name="question" value={{ question.id }}>
-                <input type="submit"  class="bg-green-700 text-white py-1 px-3 rounded-md "  name="like"  {% if not user.is_authenticated %} disabled {% endif %} value="Like">
+                <input type="submit"  class="bg-blue-700 text-white py-1 px-3 rounded-md "  name="like"  {% if not user.is_authenticated %} disabled {% endif %} value="Like">
             </form>
 
         </div>
@@ -50,7 +50,7 @@
             {% if request.user == question.author.user %}
                 <form action="{% url 'poll:delete' question.id  %}" method="post">
                     {% csrf_token %}
-                    <input type="submit" name="delete" value="Delete Poll">
+                    <input type="submit" name="delete" class="p-2 bg-red-600 rounded-md" value="Delete Poll">
                 </form>
             {% endif %}
         
@@ -68,15 +68,15 @@
         </div>
     
         <div class="w-full">
-            <hr>
+            <hr class="my-3">
 
             <h3> Comments </h3>
         
-            <form action="{% url 'poll:comment' %}" method="post">
+            <form action="{% url 'poll:comment' %}" class="w-full flex justify-between" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="question" value={{ question.id }}>
-                <input type="text" name="comment_text" placeholder="Coment on this poll">
-                <input type="submit" name="comment" value="Post comment">
+                <input type="text" class="text-gray-950 p-2" name="comment_text" placeholder="Coment on this poll">
+                <input type="submit" class="bg-green-800 rounded p-2" name="comment" value="Post comment">
             </form>
         
         
@@ -93,22 +93,5 @@
     </div>
 
     
-
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 {% endblock %}
