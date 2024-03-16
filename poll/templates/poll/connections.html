@@ -1,64 +1,56 @@
-<!DOCTYPE html>
-<html>
-    
-    <head>
-        <title> 
-            Your Connections
-        </title>
-    </head>
-    
+{% extends "poll/base.html" %}
 
-    <body>
-    
-        <div class="connections list">
-                <p>  {{ followers|length }}  
-                    Follower(s)
-                </p>
+
+{% block title %}
+    Connections
+{% endblock %}
+
+{% block body %}
+
+<div class="w-full flex justify-around text-white">
+    <div id="connections list" class="w-1/2 border-r border-gray-900 text-white">
+        <p class="w-full flex justify-center text-xl font-bold mx-auto p-2"> 
+             {{ followers|length }}  
+            <span class="ml-2 text-gray-400">Follower(s)</span>
+        </p>
+        
+        <ul>
+            {% for follower in followers %}
                 
-                <ul>
-                    {% for follower in followers %}
-                        
-                        <div class="follower_user">
-                            <li> <a href="{% url 'users:profile' follower.user.username %}"> {{ follower.user.username.capitalize }} </a> </li> 
-                            
-                        </div>
-                        
-                        {% empty %}
-                            <i> Nobody has followed you yet.</i>
-                        
-        
-                    {% endfor %}
-                </ul>
-            </div>
-
-            <hr>
-
-            <div class="connections list">
-                <p>  {{ followings|length }}  
-                    Following(s)
-                </p>
+                <div class="follower_user">
+                    <li> <a href="{% url 'users:profile' follower.user.username %}"> {{ follower.user.username.capitalize }} </a> </li> 
+                </div>
                 
-                <ul>
-                    {% for following in followings %}
-                        
-                        <div class="following_user">
-                            <li> <a href="{% url 'users:profile' following.user.username %}"> {{ following.user.username.capitalize }} </a> </li> 
-                            <a href="{% url 'users:connect' following.user.pk %}"> Unfollow </a>
-                        </div>
-                        
-                        {% empty %}
-                                <i> You haven't followed anybody yet </i>
+                {% empty %}
+                    <span class="w-full italic text-gray-500 flex justify-center text-xl mx-auto "> Nobody has followed you yet.</span>
+                
+
+            {% endfor %}
+        </ul>
+    </div>
+
+    <hr>
+
+    <div class="w-1/2 connections list p-2">
+        <p class="w-full flex justify-center text-xl font-bold mx-auto "> 
+            {{ followings|length }}  
+            <span class="ml-2 text-gray-400">Following(s) </span>
+        </p>
         
-                    {% endfor %}
-                </ul>
-            </div>
+        <ul>
+            {% for following in followings %}
+                
+                <li class="list-disc following_user flex justify-between">
+                    <span> <a href="{% url 'users:profile' following.user.username %}"> {{ following.user.username.capitalize }} </a> </span> 
+                    <a class="text-sm text-red-500" href="{% url 'users:connect' following.user.pk %}"> Unfollow </a>
+                </li>
+                
+                {% empty %}
+                        <i> You haven't followed anybody yet </i>
 
-        <br>
-        <br>
-        
-        <a href="{% url 'users:profile' request.user.username %}"> Go Back </a>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
-    </body>
-
-
-</html>
+{% endblock %}
