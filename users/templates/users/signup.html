@@ -1,7 +1,7 @@
 {% extends 'poll/base.html' %}
 
 {% block title %}
-    <title> Log In</title>
+    <title> Sign Up</title>
 {% endblock %}
 
 
@@ -12,30 +12,52 @@
 
 
 {% block body %}
+    <div class="text-white bg-gray-950 w-full flex justify-center items-center  mt-10">
+        <div     class="w-1/2 text-9xl text-green-700 flex items-center justify-center font-bold px-5">
+            Join Us!
+        </div>
 
-    {% if message %}
-        {{ message }}
-    {% endif %}
+    <div class="w-1/2">
+        {% if message %}
+            <div class="w-full py-5 text-white font-bold bg-red-600 flex justify-center items-center"> 
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <form action="{% url 'users:signup' %}" method="post" class="w-full">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <section class="w-full ">
+                    
+                    <div class="w-full">
+                        <div class=""> {{ field.label_tag}} </div>
+                        <div class="text-gray-900 w-full "> {{ field }} </div>
+                    </div>
+
+                    {% if message %}
+                        {{ message }}
+                        
+                        {% if field.help_text %}
+                            {{ field.help_text }}
+                        {% endif %}
+                        
+                        {% for error in field.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
 
 
-    <form action="{% url 'users:signup' %}" method="post">
-        {% csrf_token %}
-        
-        {% for field in form %}
-        <p>
-            {{ field.label_tag}} <br>
-            {{ field }}
+                </section>
+                {% endfor %}
+                <input type="submit"  class="rounded-md hover:bg-green-800 flex justify-center items-center bg-green-700 my-4 p-2 " value="Sign Up">
+            </form>
 
-            {% if field.help_text %}
-                {{ field.help_text }}
-            {% endif %}
-            {% for error in field.errors %}
-                {{ error }}
-            {% endfor %}
-        </p>
-        {% endfor %}
-        <input type="submit" value="Sign Up">
-    </form>
+
+    </div>
+    
+    </div>
+
 
 
 {% endblock %}
