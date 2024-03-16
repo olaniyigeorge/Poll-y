@@ -17,9 +17,12 @@
             {% if latest_following_polls %}
 
                 {% for poll in latest_following_polls %}
-                    <li class="list-disc ml-6">
-                        <span>{{ poll }}</span> 
-                        <a  class="italic text-sm text-green-700" href="{% url 'poll:poll_details' poll.pk %}"> View Poll </a>
+                
+                    <li class=" ml-6 list-disc list-item space-x-3 hover:text-green-700 hover:italic x">
+                            
+                        <a href="{% url 'poll:poll_details' poll.pk %}" class> 
+                            <p>{{ poll }}</p>  
+                        </a>
                     </li>
                     
                 {% endfor %}
