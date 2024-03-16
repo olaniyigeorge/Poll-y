@@ -12,7 +12,7 @@
             {% endblock%}
         </head>
 
-        <body>
+        <body class="bg-gray-950">
             <header id="top_nav" class="w-full shadow py-2 px-6 h-auto bg-gray-950 flex items-center justify-between text-white">
                 <a href="{% url 'poll:index' %}" class="text-2xl font-bold"> Poll-y </a> 
                 <div id="search_group">
@@ -23,7 +23,9 @@
                 </div>
                 <div class="">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'poll:index' %}"> ooo </a>
+                        <a href="{% url 'poll:index' %}" > 
+                             <span class="rounded-full flex items-center justify-center w-5 h-5 border-2 border-white p-3 bg-gray-800"> <!--. PFP --> </span>    
+                        </a>
                     {% else %}
                         <a href="{% url 'users:login' %}" class="p-2 bg-green-700 rounded-md -center items-center hover:scale-110 transition ease-in-out delay-75 hover:bg-green-800 shadow-inner "> Sign In </a>
                     {% endif %}
@@ -33,14 +35,14 @@
             </header>
 
     
-            <div id="Outlet" class="flex w-full h-screen">
+            <div id="Outlet" class="flex w-full h-full">
                 {% if user.is_authenticated %}
-                <div id="side_nav" class="h-full pl-6 w-1/5 space-y-4 border-r border-gray-900 text-white block bg-gray-950">
-                    <a class="block" href="{% url 'poll:home' %}"> Home </a> 
-                    <a class="block" href="{% url 'users:profile' request.user %}"> Profile </a>
-                    <a class="block" href="{% url 'poll:notifications' %}"> Notifications </a>
-                    <a class="block" href="{% url 'poll:add_question' %}"> Create Poll </a>    
-                    <a class="block" href="{% url 'users:logout' %}"> Log Out </a>
+                <div id="side_nav" class="h-full pl-6 w-1/5 space-y-10 py-10 text-white block bg-gray-950">
+                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'poll:home' %}"> Home </a> 
+                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'users:profile' request.user %}"> Profile </a>
+                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'poll:notifications' %}"> Notifications </a>
+                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'poll:add_question' %}"> Create Poll </a>    
+                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'users:logout' %}"> Log Out </a>
                 </div>
                 {% endif %}
                 
@@ -49,11 +51,6 @@
             </div>
             
 
-            {% if not user.is_authenticated %}
-                <div id="bottom_auth_nav">
-                    <a href="{% url 'users:login' %}"> Log in </a>    
-                    <a href="{% url 'users:signup' %}"> Sign Up</a>
-                </div>
-            {% endif%}
+    
         </body>
     </html>
