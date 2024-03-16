@@ -8,33 +8,35 @@
 
 
 {% block body %}
-
-{% if message %}
-        {{ message }}
-    {% endif %}
-
-
-    <form action="{% url 'poll:add_question' %}" method="post">
-        {% csrf_token %}
-        
-        {% for field in question_form %}
-        <p>
-            {{ field.label_tag}} 
-            <br>
-            {{ field }}
-
-            {% if field.help_text %}
-                {{ field.help_text }}
+    <div class="w-full p-2 text-white">
+            {% if message %}
+                {{ message }}
             {% endif %}
 
-            {% for error in field.errors %}
-                {{ error }}
-            {% endfor %}
-        </p>
-        {% endfor %}
-        <input type="submit" value="Ask">
-    </form>
 
+            <form action="{% url 'poll:add_question' %}" method="post" class="w-full">
+                {% csrf_token %}
+                
+                {% for field in question_form %}
+                <p class="w-full ">
+                    {{ field.label_tag}} 
+                    <br>
+                    <span class="text-gray-900"> {{ field }}</span>
+
+                    {% if field.help_text %}
+                        {{ field.help_text }}
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </p>
+                {% endfor %}
+                <input type="submit" class="bg-green-700 p-2 rounded-md" value="Ask">
+            </form>
+
+    </div>
+    
 
 
 {% endblock %}
