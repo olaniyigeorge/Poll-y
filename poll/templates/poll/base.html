@@ -14,7 +14,13 @@
 
         <body class="bg-gray-950">
             <header id="top_nav" class="w-full shadow py-2 px-6 h-auto bg-gray-950 flex items-center justify-between text-white">
-                <a href="{% url 'poll:index' %}" class="text-2xl font-bold"> Poll-y </a> 
+                <a href="{% url 'poll:index' %}" class="text-2xl font-bold"> 
+                    {% if user.is_authenticated %}
+                    <img src="{% static 'images/rasp-logo-green.png' %}" alt="Rasp Logo" class="text-sm w-auto h-10" />    
+                    {% else %}
+                        Poll-y
+                    {% endif %}
+                </a> 
                 <div id="search_group">
                     <form action="{% url 'poll:search' %}" class="w-full md:w-[500px] rounded-md p-2=1 border flex bg-gray-100" method="get">
                         <input type="text" name="query" class="p-2 focus:outline-none text-gray-950 w-full rounded" placeholder="Search Poll-y">
