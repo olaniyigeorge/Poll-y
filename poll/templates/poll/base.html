@@ -44,11 +44,11 @@
             <div id="Outlet" class="flex w-full h-full">
                 {% if user.is_authenticated %}
                 <div id="side_nav" class="h-full pl-6 w-1/5 space-y-10 py-10 text-white block bg-gray-950">
-                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'poll:home' %}"> Home </a> 
-                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'users:profile' request.user %}"> Profile </a>
-                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'poll:notifications' %}"> Notifications </a>
-                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'poll:add_question' %}"> Create Poll </a>    
-                    <a class="block p-2  border border-gray-900  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'users:logout' %}"> Log Out </a>
+                    <a class="block p-2  border border-gray-900 hover:text-green-700 hover:border-green-700  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'poll:home' %}"> Home </a> 
+                    <a class="block p-2  border border-gray-900 hover:text-green-700 hover:border-green-700  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'users:profile' request.user %}"> Profile </a>
+                    <a class="block p-2  border border-gray-900 hover:text-green-700 hover:border-green-700  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'poll:notifications' %}"> Notifications </a>
+                    <a class="block p-2  border border-gray-900 hover:text-green-700 hover:border-green-700  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'poll:add_question' %}"> Create Poll </a>    
+                    <a class="block p-2  border border-gray-900 hover:text-red-500 hover:border-red-500  rounded-md active:text-green-700 hover:text-lg hover:font-bold" href="{% url 'users:logout' %}"> Log Out </a>
                 </div>
                 {% endif %}
                 
