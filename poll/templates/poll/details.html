@@ -75,10 +75,21 @@
             <form action="{% url 'poll:comment' %}" class="w-full flex justify-between" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="question" value={{ question.id }}>
-                <input type="text" class="text-gray-950 p-2" name="comment_text" placeholder="Coment on this poll">
-                <input type="submit" class="bg-green-800 rounded p-2" name="comment" value="Post comment">
+                <input type="text" class="text-gray-950 p-2" name="comment_text" placeholder="Coment on this poll" oninput="checkCommentLength()">
+                <input type="submit" class="bg-green-800 rounded p-2"name="comment" value="Post comment" disabled>
             </form>
-        
+            
+            <script>
+                function checkCommentLength() {
+                    var commentText = document.getElementById('comment_text').value;
+                    var commentButton = document.getElementById('comment_button');
+                    if (commentText.length >= 2) {
+                        commentButton.disabled = false;
+                    } else {
+                        commentButton.disabled = true;
+                    }
+                }
+            </script>
         
             {% for comment in comments %}
         
